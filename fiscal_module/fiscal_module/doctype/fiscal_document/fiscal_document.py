@@ -167,7 +167,8 @@ def validate_fiscal_document(doc, method=None):
 
 
 def set_fiscal_document_link(doc, method=None):
-    doc.fiscal_document_description += getlink("Sales Invoice", doc.name)
+    pass
+    #doc.fiscal_document_description += getlink("Sales Invoice", doc.name)
 
 
 def set_fiscal_document_info(doc, method=None):
