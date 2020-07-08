@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include fiscal_module *.css
+recursive-include fiscal_module *.csv
+recursive-include fiscal_module *.html
+recursive-include fiscal_module *.ico
+recursive-include fiscal_module *.js
+recursive-include fiscal_module *.json
+recursive-include fiscal_module *.md
+recursive-include fiscal_module *.png
+recursive-include fiscal_module *.py
+recursive-include fiscal_module *.svg
+recursive-include fiscal_module *.txt
+recursive-exclude fiscal_module *.pyc

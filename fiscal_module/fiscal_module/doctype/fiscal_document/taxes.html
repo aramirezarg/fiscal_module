@@ -1,0 +1,26 @@
+<tr>
+    <td colspan="2">
+        <table>
+            <thead>
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Base</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            {%- for row in data -%}
+                <tr>
+                    <td class="text-right">{{row["description"]}}</td>
+                    <td class="text-right">{{row["base"]}}</td>
+                    <td class="text-right">{{row["rate"]}}</td>
+                    <td class="text-right">{{row["amount"]}}</td>
+                    <td class="text-right">{{row["total"]}}</td>
+                <tr>
+            {%- endfor -%}
+            </tbody>
+        </table>
+    </td>
+</tr>

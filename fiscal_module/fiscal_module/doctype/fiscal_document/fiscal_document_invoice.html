@@ -1,0 +1,157 @@
+{% set customer = frappe.get_doc("Customer", doc.customer) %}
+<table class="table table-condensed">
+    <tbody>
+    <tr>
+        <td style="text-align: center; padding: 0; background-color: lightgray" colspan="2">
+            <p style="font-size: 14px">{{_("INVOICE")}}: <strong>{{doc.invoice_number}}</strong></p>
+        </td>
+    </tr>
+    <tr style="padding: 0">
+        <td style="width: 50%">
+			<div class="frappe-control" data-fieldtype="HTML" data-fieldname="contact_html" style="padding: 0; margin: 0">
+				<div class="clearfix"></div>
+				<div class="address-box">
+					<p class="h6">
+						{{ customer.customer_name }}<br>
+						{{_("Tax id")}}: {{ customer.tax_id }}
+					</p><label></label>
+					{{model.get_customer_address(customer)}}
+				</div>
+			</div>
+		</td>
+		<td style="width: 50%">
+			<div class="frappe-control" data-fieldtype="HTML" data-fieldname="contact_html">
+				<div class="clearfix"></div>
+				<div class="address-box">
+					<p class="h6">
+						{{_("Transaction")}}: {{ doc.name }}<br>
+						{{_("Date")}}: {{ doc.get_formatted("posting_date") }}<br><label></label>
+
+						{{_(model.description)}}: {{ model.name }}<br>
+						{{_("Date Range")}}: {{ model.date_range() }}<br>
+						{{_("Invoice Range")}}: {{ model.invoice_range() }}<br>
+					</p>
+				</div>
+			</div>
+		</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table table-condensed cart no-border" style="margin-top: -20px">
+	<thead>
+		<tr style="font-size: 14px">
+			<th>{{ _("Description") }}</th>
+			<th class="text-right">{{ _("Qty") }}</th>
+			<th class="text-right">{{ _("Rate") }}</th>
+			<th class="text-right">{{ _("Discount") }}</th>
+			<th class="text-right">{{ _("Amount") }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{%- for item in doc.items -%}
+		<tr>
+			<td>{{ item.description }}</td>
+			<td class="text-right">{{ item.qty }}</td>
+			<td class="text-right">{{ item.get_formatted("rate") }}</td>
+			<td class="text-right">{{ item.get_formatted("discount") }}</td>
+			<td class="text-right">{{ item.get_formatted("amount") }}</td>
+		</tr>
+		{%- endfor -%}
+		<tr><td colspan="6"></td></tr>
+	</tbody>
+</table>
+<table class="table table-bordered" style="margin-top: -20px">
+	<tr>
+		<td style="width: 50%"></td>
+		<td style="width: 50%; padding: 0 !important;">
+			<table class="table table-condensed" style="margin: -1px -5px -1px -1px;">
+				<tbody>
+					<tr>
+						{% if doc.flags.show_inclusive_tax_in_print %}
+							<td class="text-right">
+								{{ _("Total Excl. Tax") }}
+							</td>
+							<td class="text-right">
+								{{ doc.get_formatted("net_total", doc) }}
+							</td>
+						{% else %}
+							<td class="text-right">
+								{{ _("Subtotal") }}
+							</td>
+							<td class="text-right">
+								{{ doc.get_formatted("total", doc) }}
+							</td>
+						{% endif %}
+					</tr>
+
+					<tr>
+						<td class="text-right">
+							{{ _("Discount") }}
+						</td>
+						<td class="text-right">
+							{{ doc.get_formatted("discount_amount") }}
+						</td>
+					</tr>
+
+					<tr>
+						<td class="text-right">
+							{{ _("Exempt") }}
+						</td>
+						<td class="text-right">
+							{{ frappe.utils.fmt_money(0, currency=doc.currency) }}
+						</td>
+					</tr>
+
+					{{model.render_taxes(doc.taxes)}}
+
+					<tr style="font-size: large">
+						<td class="text-right">
+							<b>{{ _("Grand Total") }}</b>
+						</td>
+						<td class="text-right">
+							{{ doc.get_formatted("grand_total") }}
+						</td>
+					</tr>
+					{%- if doc.rounded_total -%}
+					<tr>
+						<td class="text-right">
+							<b>{{ _("Rounded Total") }}</b>
+						</td>
+						<td class="text-right">
+							{{ doc.get_formatted("rounded_total") }}
+						</td>
+					</tr>
+					{%- endif -%}
+					<tr>
+						<td class="text-right">
+							<b>{{ _("Paid Amount") }}</b>
+						</td>
+						<td class="text-right">
+							{{ doc.get_formatted("paid_amount") }}
+						</td>
+					</tr>
+					{%- if doc.change_amount -%}
+						<tr>
+							<td class="text-right">
+								<b>{{ _("Change Amount") }}</b>
+							</td>
+							<td class="text-right">
+								{{ doc.get_formatted("change_amount") }}
+							</td>
+						</tr>
+					{%- endif -%}
+				</tbody>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><p>{{letter_amount}}</p></td>
+	</tr>
+</table>
+
+<p>{{ doc.terms or "" }}</p>
+
+<br><br>
+<p class="text-center">{{ _("Original Client") }} | {{ _("Copy Issuer") }}</p>
+<p class="text-center">{{ _("Thank you, please visit again.") }}</p>

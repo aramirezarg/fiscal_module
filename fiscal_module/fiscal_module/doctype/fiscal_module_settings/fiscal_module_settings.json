@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "creation": "2020-05-28 16:44:43.549176",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "restrictions_section",
+  "device",
+  "column_break_3",
+  "date_range",
+  "column_break_5",
+  "billing_range",
+  "section_break_7",
+  "default_fiscal_document"
+ ],
+ "fields": [
+  {
+   "fieldname": "restrictions_section",
+   "fieldtype": "Section Break",
+   "label": "Restrictions"
+  },
+  {
+   "default": "0",
+   "fieldname": "device",
+   "fieldtype": "Check",
+   "label": "Device"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "date_range",
+   "fieldtype": "Check",
+   "label": "Date Range"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "billing_range",
+   "fieldtype": "Check",
+   "label": "Billing Range"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "default_fiscal_document",
+   "fieldtype": "Link",
+   "label": "Default Fiscal Document",
+   "options": "Fiscal Document"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2020-05-28 16:44:43.549176",
+ "modified_by": "Administrator",
+ "module": "Fiscal Module",
+ "name": "Fiscal Module Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
