@@ -59,7 +59,7 @@ class FiscalModuleSettings(Document):
                 field = fields[f]
                 filters = {"dt": doctype, "fieldname": f}
 
-                if frappe.get_value("DocField", {"parentType": "DocType"}) is None:
+                if frappe.get_value("DocField", filters={"parentType": "DocType", 'fieldname': f}) is None:
                     if frappe.get_value("Custom Field", filters) is None:
                         doc = frappe.new_doc("Custom Field")
                         doc.dt = doctype
