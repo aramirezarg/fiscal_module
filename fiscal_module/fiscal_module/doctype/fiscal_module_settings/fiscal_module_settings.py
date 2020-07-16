@@ -26,6 +26,9 @@ class FiscalModuleSettings(Document):
             final_date=dict(
                 label="Final Date", fieldtype="Date"
             ),
+            pos_profile=dict(
+                label="POS Profile", fieldtype="Link"
+            ),
 
             ####################
             fiscal_document_column_break2=dict(
@@ -56,29 +59,30 @@ class FiscalModuleSettings(Document):
                 field = fields[f]
                 filters = {"dt": doctype, "fieldname": f}
 
-                if frappe.get_value("Custom Field", filters) is None:
-                    doc = frappe.new_doc("Custom Field")
-                    doc.dt = doctype
-                    doc.label = field["label"]
-                    doc.fieldname = f
-                    doc.fieldtype = field["fieldtype"]
-                    doc.options = field["label"] if field["fieldtype"] == "Link" else ""
+                if frappe.get_value("DocField", {"parentType": "DocType"}) is None:
+                    if frappe.get_value("Custom Field", filters) is None:
+                        doc = frappe.new_doc("Custom Field")
+                        doc.dt = doctype
+                        doc.label = field["label"]
+                        doc.fieldname = f
+                        doc.fieldtype = field["fieldtype"]
+                        doc.options = field["label"] if field["fieldtype"] == "Link" else ""
 
-                    doc.read_only = 1
-                    doc.translatable = 0
-                    doc.insert_after = insert_after
+                        doc.read_only = 1
+                        doc.translatable = 0
+                        doc.insert_after = insert_after
 
-                    if "fetch_from" in field:
-                        doc.fetch_from = field['fetch_from']
+                        if "fetch_from" in field:
+                            doc.fetch_from = field['fetch_from']
 
-                    if "hidden" in field:
-                        doc.hidden = field['hidden']
+                        if "hidden" in field:
+                            doc.hidden = field['hidden']
 
-                    if "print_hide" in field:
-                        doc.printhide = field['print_hide']
+                        if "print_hide" in field:
+                            doc.printhide = field['print_hide']
 
-                    doc.save()
-                    insert_after = f
+                        doc.save()
+                        insert_after = f
 
         if frappe.get_value("Custom Field", {
             "dt": "POS Profile",
