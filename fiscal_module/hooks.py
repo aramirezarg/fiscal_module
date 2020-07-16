@@ -19,6 +19,13 @@ doc_events = {
         #"on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
         #"on_submit": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
     },
+    "Fees": {
+        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+        #"on_load": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_link",
+        #"on_create": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+        #"on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+        #"on_submit": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+    },
 }
 
 #doctype_js = {
