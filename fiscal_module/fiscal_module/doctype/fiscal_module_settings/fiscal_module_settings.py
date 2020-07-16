@@ -27,7 +27,6 @@ class FiscalModuleSettings(Document):
                 label="Final Date", fieldtype="Date"
             ),
 
-
             ####################
             fiscal_document_column_break2=dict(
                 label="", fieldtype="Column Break"
@@ -36,7 +35,7 @@ class FiscalModuleSettings(Document):
                 label="Fiscal Document", fieldtype="Link", print_hide='Print Hide'
             ),
             fiscal_document_description=dict(
-                label="CAI", fieldtype="Read Only", fetch_from='fiscal_document.fiscal_document'
+                label="CAI", fieldtype="Read Only", fetch_from='fiscal_document.fiscal_document', hidden=1
             ),
             initial_number=dict(
                 label="Initial Number", fieldtype="Data"
@@ -49,48 +48,37 @@ class FiscalModuleSettings(Document):
             ),
         )
 
-        doctype = "Sales Invoice"
+        doctypes = ["Sales Invoice", "Fees"]
         insert_after = ""
-        for f in fields:
-            field = fields[f]
-            filters = {"dt": doctype, "fieldname": f}
 
-            if frappe.get_value("Custom Field", filters) is None:
-                doc = frappe.new_doc("Custom Field")
-                doc.dt = doctype
-                doc.label = field["label"]
-                doc.fieldname = f
-                doc.fieldtype = field["fieldtype"]
-                doc.options = field["label"] if field["fieldtype"] == "Link" else ""
+        for doctype in doctypes:
+            for f in fields:
+                field = fields[f]
+                filters = {"dt": doctype, "fieldname": f}
 
-                doc.read_only = 1
-                doc.translatable = 0
-                doc.insert_after = insert_after
+                if frappe.get_value("Custom Field", filters) is None:
+                    doc = frappe.new_doc("Custom Field")
+                    doc.dt = doctype
+                    doc.label = field["label"]
+                    doc.fieldname = f
+                    doc.fieldtype = field["fieldtype"]
+                    doc.options = field["label"] if field["fieldtype"] == "Link" else ""
 
-                if "fetch_from" in field:
-                    doc.fetch_from = field['fetch_from']
+                    doc.read_only = 1
+                    doc.translatable = 0
+                    doc.insert_after = insert_after
 
-                if "hidden" in field:
-                    doc.hidden = field['hidden']
+                    if "fetch_from" in field:
+                        doc.fetch_from = field['fetch_from']
 
-                if "print_hide" in field:
-                    doc.printhide = field['print_hide']
+                    if "hidden" in field:
+                        doc.hidden = field['hidden']
 
-                doc.save()
-                insert_after = f
+                    if "print_hide" in field:
+                        doc.printhide = field['print_hide']
 
-        if frappe.get_value("Custom Field", {
-            "dt": "Purchase Invoice",
-            "fieldname": "fiscal_document"
-        }) is None:
-            doc = frappe.new_doc("Custom Field")
-            doc.label = "Fiscal Document"
-            doc.fieldname = "fiscal_document"
-            doc.dt = "Purchase Invoice"
-            doc.translatable = 0
-            doc.reqd = 1
-
-            doc.save()
+                    doc.save()
+                    insert_after = f
 
         if frappe.get_value("Custom Field", {
             "dt": "POS Profile",
@@ -99,9 +87,9 @@ class FiscalModuleSettings(Document):
             doc = frappe.new_doc("Custom Field")
             doc.label = "Fiscal Document"
             doc.fieldname = "fiscal_document"
-            doc.dt = "Purchase Invoice"
-            doc.fieldtype = "Data"
-            doc.options = "Fiscal Document"
+            doc.dt = "POS Profile"
+            doc.fieldtype = "Table"
+            doc.options = "POS Fiscal Document"
             doc.translatable = 0
             doc.reqd = 1
 

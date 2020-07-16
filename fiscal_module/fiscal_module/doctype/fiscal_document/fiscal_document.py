@@ -7,7 +7,6 @@ import frappe
 from frappe.model.document import Document
 from datetime import datetime
 from frappe import _
-from frappe.utils import date_diff, getlink
 
 
 class FiscalDocument(Document):
@@ -110,16 +109,17 @@ class FiscalDocument(Document):
             invoice
         ))
 
-    def set_fiscal_data_in_invoice(self, invoice):
+    def set_fiscal_data_in_invoice(self, party):
         name = self.invoice_number()
-        invoice.name = name
-        invoice.invoice_number = name
-        invoice.fiscal_document = self.name
-        invoice.fiscal_document_description = self.fiscal_document
-        invoice.initial_date = self.initial_date
-        invoice.final_date = self.final_date
-        invoice.initial_number = self.get_initial_number
-        invoice.final_number = self.get_final_number
+
+        party.name = name
+        party.invoice_number = name
+        party.fiscal_document = self.name
+        party.fiscal_document_description = self.fiscal_document
+        party.initial_date = self.initial_date
+        party.final_date = self.final_date
+        party.initial_number = self.get_initial_number
+        party.final_number = self.get_final_number
 
     def validate_from_invoice(self):
         self.validate_expired_document(True)
@@ -164,11 +164,6 @@ def validate_fiscal_document(doc, method=None):
 """def set_fiscal_document_info(doc, method=None):
     fiscal_document, pos_profile = fiscal_document_data(doc)
     fiscal_document.set_fiscal_data_in_invoice(doc.name, pos_profile.name)"""
-
-
-def set_fiscal_document_link(doc, method=None):
-    pass
-    #doc.fiscal_document_description += getlink("Sales Invoice", doc.name)
 
 
 def set_fiscal_document_info(doc, method=None):
