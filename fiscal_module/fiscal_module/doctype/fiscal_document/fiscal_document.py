@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from datetime import datetime
+from frappe.utils import date_diff
 from frappe import _
 
 
