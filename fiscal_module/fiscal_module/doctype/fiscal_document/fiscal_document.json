@@ -21,7 +21,7 @@
   "status",
   "column_break_11",
   "final_number",
-  "actual_position",
+  "current_position",
   "section_break_15",
   "notes",
   "validation_date"
@@ -33,43 +33,59 @@
    "in_list_view": 1,
    "label": "Fiscal Document",
    "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1,
    "unique": 1
   },
   {
    "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "section_break_4",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "initial_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Initial Date",
-   "reqd": 1
+   "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "column_break_6",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "final_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Final Date",
-   "reqd": 1
+   "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "section_break_8",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "initial_number",
    "fieldtype": "Int",
    "label": "Initial Number",
-   "reqd": 1
+   "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "default": "Created",
@@ -77,67 +93,91 @@
    "fieldtype": "Select",
    "label": "Status",
    "options": "Created\nApproved\nDisabled",
-   "reqd": 1
+   "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "column_break_11",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "final_number",
    "fieldtype": "Int",
    "label": "Final Number",
-   "reqd": 1
+   "precision": "0",
+   "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "description",
    "fieldtype": "Data",
-   "label": "Description"
+   "label": "Description",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "section_break_15",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "notes",
    "fieldtype": "Text",
-   "label": "Notes"
+   "label": "Notes",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "section_break_prefix",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "section_break_last_segment_length",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "last_segment_length",
    "fieldtype": "Int",
-   "label": "Last Segment Length"
-  },
-  {
-   "fieldname": "actual_position",
-   "fieldtype": "Int",
-   "label": "Actual Position",
-   "reqd": 1
+   "label": "Last Segment Length",
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "prefix",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Prefix",
-   "reqd": 1
+   "reqd": 1,
+   "show_days": 1,
+   "show_seconds": 1
   },
   {
    "fieldname": "validation_date",
    "fieldtype": "Date",
    "hidden": 1,
-   "label": "Validatiorn Date"
+   "label": "Validatiorn Date",
+   "show_days": 1,
+   "show_seconds": 1
+  },
+  {
+   "fieldname": "current_position",
+   "fieldtype": "Data",
+   "label": "Current Position",
+   "show_days": 1,
+   "show_seconds": 1
   }
  ],
  "links": [],
- "modified": "2020-05-29 21:30:13.807652",
+ "modified": "2020-07-18 15:46:20.317888",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Document",

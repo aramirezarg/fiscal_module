@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from datetime import datetime
-from frappe.utils import date_diff
+from frappe.utils import date_diff, cint, cstr
 from frappe import _
 
 
@@ -16,7 +16,7 @@ class FiscalDocument(Document):
 
     def validate(self):
         self.validate_expired_document()
-        self.validate_actual_position()
+        self.validate_current_position()
         self.validate_dates()
 
     def fiscal_document_has_expired(self):
@@ -38,22 +38,22 @@ class FiscalDocument(Document):
         if date_diff(self.initial_date, self.final_date) > 0:
             frappe.throw('The final date must be greater than the initial date')
 
-    def validate_actual_position(self, throw=False):
-        if self.actual_position > self.final_number:
+    def validate_current_position(self, throw=False):
+        if cint(self.current_position) > cint(self.final_number):
             message = "There are no invoice numbers available for the active tax document"
             self.execute_validate(message, throw)
 
     def invoice_number(self):
-        if self.actual_position is None or self.actual_position == 0:
-            self.actual_position = self.initial_number
+        if self.current_position is None or self.current_position == 0:
+            self.current_position = self.initial_number
         else:
-            self.actual_position += 1
+            self.current_position = (cint(self.current_position) + 1)
 
-        self.validate_actual_position(True)
+        self.validate_current_position(True)
 
-        frappe.db.set_value("Fiscal Document", self.name, "actual_position", self.actual_position)
+        frappe.db.set_value("Fiscal Document", self.name, "current_position", self.current_position)
 
-        return f'{self.prefix}-{str(self.actual_position).zfill(self.last_segment_length)}'
+        return f'{self.prefix}-{str(self.current_position).zfill(self.last_segment_length)}'
 
     def date_range(self):
         return f'{self.get_formatted("initial_date")} - {self.get_formatted("final_date")}'
@@ -124,7 +124,7 @@ class FiscalDocument(Document):
 
     def validate_from_invoice(self):
         self.validate_expired_document(True)
-        self.validate_actual_position(True)
+        self.validate_current_position(True)
 
     def normalize_taxes(self, taxes):
         _taxes = []
