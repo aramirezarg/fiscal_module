@@ -45,7 +45,7 @@ class FiscalDocument(Document):
 
     def invoice_number(self):
         if self.actual_position is None or self.actual_position == 0:
-            self.position = self.initial_number
+            self.actual_position = self.initial_number
         else:
             self.actual_position += 1
 
