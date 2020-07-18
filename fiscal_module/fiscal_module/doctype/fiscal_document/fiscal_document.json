@@ -34,8 +34,7 @@
    "label": "Fiscal Document",
    "reqd": 1,
    "show_days": 1,
-   "show_seconds": 1,
-   "unique": 1
+   "show_seconds": 1
   },
   {
    "fieldname": "column_break_2",
@@ -177,7 +176,7 @@
   }
  ],
  "links": [],
- "modified": "2020-07-18 15:46:20.317888",
+ "modified": "2020-07-18 16:17:17.229944",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Document",
