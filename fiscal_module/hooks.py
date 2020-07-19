@@ -17,14 +17,11 @@ app_license = "MIT"
 # "on_submit"
 doc_events = {
     "Sales Invoice": {
-        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        "rename": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info"
     },
     "Purchase Invoice": {
         "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.autoname_purchase_invoice",
-        "on_cancel": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.on_cancel_purchase_invoice",
-        "on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.amend_purchase_invoice"
+        "on_cancel": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.on_cancel_purchase_invoice"
     },
     "Fees": {
         "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info"
