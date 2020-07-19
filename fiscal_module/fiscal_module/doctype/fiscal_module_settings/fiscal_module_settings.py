@@ -65,6 +65,7 @@ class FiscalModuleSettings(Document):
                     doc.options = field["label"] if field["fieldtype"] == "Link" else ""
 
                     doc.read_only = 1
+                    doc.no_copy = 1
                     doc.translatable = 0
                     doc.insert_after = insert_after
 
@@ -92,6 +93,7 @@ class FiscalModuleSettings(Document):
             doc.options = "POS Profile"
             doc.translatable = 0
             doc.read_only = 1
+            doc.no_copy = 1
 
             doc.save()
 
@@ -107,6 +109,7 @@ class FiscalModuleSettings(Document):
             doc.options = "POS Fiscal Document"
             doc.translatable = 0
             doc.reqd = 1
+            doc.no_copy = 1
 
             doc.save()
 
@@ -123,6 +126,7 @@ class FiscalModuleSettings(Document):
             doc.insert_after = "fiscal_document"
             doc.translatable = 0
             doc.reqd = 1
+            doc.no_copy = 1
 
             doc.save()
 
@@ -137,6 +141,7 @@ class FiscalModuleSettings(Document):
             doc.fieldtype = "Data"
             doc.translatable = 0
             doc.reqd = 1
+            doc.no_copy = 1
             doc.save()
 
         if frappe.get_value("Custom Field", {
@@ -150,4 +155,5 @@ class FiscalModuleSettings(Document):
             doc.fieldtype = "Data"
             doc.translatable = 0
             doc.reqd = 1
+            doc.no_copy = 1
             doc.save()

@@ -191,5 +191,28 @@ def amend_purchase_invoice(doc, method=None):
         doc.name = doc.invoice_number
 
 
-def test():
-    pass
+@frappe.whitelist()
+def fix_invoices():
+    invoices = frappe.get_list("Sales Invoice", fields="name,invoice_number", filters={
+        "invoice_number": ("!=", "name")
+    })
+
+    _fix_invoices = [invoice.name for invoice in invoices if invoice.name != invoice.invoice_number]
+
+    count = 0
+    for invoice in _fix_invoices:
+        doc = frappe.get_doc("Sales Invoice", invoice)
+        fiscal_document, pos_profile = fiscal_document_data(doc)
+
+        name = fiscal_document.invoice_number()
+        frappe.rename_doc('Sales Invoice', invoice, name)
+        frappe.db.set_value("Sales Invoice", name, "invoice_number", name)
+
+        frappe.publish_realtime(
+            "progress", dict(
+                progress=[count, len(_fix_invoices)],
+                title=_('Fixed {0}').format(name),
+            ),
+            user=frappe.session.user
+        )
+        count += 1
