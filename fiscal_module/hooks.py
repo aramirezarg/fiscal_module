@@ -19,6 +19,9 @@ doc_events = {
         #"on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
         #"on_submit": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
     },
+    "Purchase Invoice": {
+        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_purchase_invoice_name",
+    },
     "Fees": {
         "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
         #"on_load": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_link",

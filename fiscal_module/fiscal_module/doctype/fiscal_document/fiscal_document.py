@@ -174,5 +174,9 @@ def set_fiscal_document_info(doc, method=None):
         fiscal_document.set_fiscal_data_in_invoice(doc)
 
 
+def set_purchase_invoice_name(doc, method=None):
+    doc.name = doc.invoice_number
+
+
 def test():
     pass

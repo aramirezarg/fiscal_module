@@ -125,3 +125,29 @@ class FiscalModuleSettings(Document):
             doc.reqd = 1
 
             doc.save()
+
+        if frappe.get_value("Custom Field", {
+            "dt": "Purchase Invoice",
+            "fieldname": "invoice_number"
+        }) is None:
+            doc = frappe.new_doc("Custom Field")
+            doc.label = "Invoice Number"
+            doc.fieldname = "invoice_number"
+            doc.dt = "Purchase Invoice"
+            doc.fieldtype = "Data"
+            doc.translatable = 0
+            doc.reqd = 1
+            doc.save()
+
+        if frappe.get_value("Custom Field", {
+            "dt": "Purchase Invoice",
+            "fieldname": "fiscal_document"
+        }) is None:
+            doc = frappe.new_doc("Custom Field")
+            doc.label = "Fiscal Document"
+            doc.fieldname = "fiscal_document"
+            doc.dt = "Purchase Invoice"
+            doc.fieldtype = "Data"
+            doc.translatable = 0
+            doc.reqd = 1
+            doc.save()
