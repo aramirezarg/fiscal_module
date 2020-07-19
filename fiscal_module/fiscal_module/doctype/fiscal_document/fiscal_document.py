@@ -17,16 +17,25 @@ class FiscalDocument(Document):
     def validate(self):
         self.validate_expired_document()
         self.validate_current_position()
+        self.validate_protected_current_position()
         self.validate_dates()
 
+    @property
     def fiscal_document_has_expired(self):
         return date_diff(self.final_date,
                          (datetime.now() if self.validation_date is None else self.validation_date)) < 0
 
+    @property
+    def fiscal_document_out_range(self):
+        return date_diff((datetime.now() if self.validation_date is None else self.validation_date),
+                         self.initial_date) < 0
+
     def validate_expired_document(self, throw=False):
-        return False
-        if self.fiscal_document_has_expired():
-            self.execute_validate("The Fiscal Document has expired" + self.validation_date, throw)
+        if self.fiscal_document_has_expired:
+            self.execute_validate("The Fiscal Document has expired", throw)
+
+        if self.fiscal_document_out_range:
+            self.execute_validate("The Fiscal Document is out of time", True)
 
     def execute_validate(self, message, throw=False):
         if throw:
@@ -43,17 +52,33 @@ class FiscalDocument(Document):
             message = "There are no invoice numbers available for the active tax document"
             self.execute_validate(message, throw)
 
+    def validate_protected_current_position(self, throw=True):
+        if cint(self.current_position) + 1 <= cint(self.protected_current_position):
+            message = "The current position on your screen does not correspond to the last changes, please refresh"
+            self.execute_validate(message, throw)
+
+    def validate_unique_invoice(self, invoice):
+        if frappe.db.count("Sales Invoice", {
+            "invoice_number": invoice
+        }) > 0:
+            message = "The last invoice number is exist, please update the fiscal document"
+            self.execute_validate(message, True)
+
     def invoice_number(self):
         if self.current_position is None or self.current_position == 0:
             self.current_position = self.initial_number
         else:
             self.current_position = (cint(self.current_position) + 1)
 
+        invoice_number = f'{self.prefix}-{str(self.current_position).zfill(self.last_segment_length)}'
+
         self.validate_current_position(True)
+        self.validate_unique_invoice(invoice_number)
 
         frappe.db.set_value("Fiscal Document", self.name, "current_position", self.current_position)
+        frappe.db.set_value("Fiscal Document", self.name, "protected_current_position", self.current_position)
 
-        return f'{self.prefix}-{str(self.current_position).zfill(self.last_segment_length)}'
+        return invoice_number
 
     def date_range(self):
         return f'{self.get_formatted("initial_date")} - {self.get_formatted("final_date")}'
@@ -86,30 +111,6 @@ class FiscalDocument(Document):
         else:
             return ''
 
-    def set_fiscal_data_in_invoice1(self, invoice, pos_profile):
-        frappe.db.sql("""
-            update `tabSales Invoice` set 
-                naming_series=%s,
-                invoice_number=%s,
-                fiscal_document=%s,
-                initial_date=%s,
-                final_date=%s,
-                initial_number=%s,
-                final_number=%s,
-                pos_profile=%s
-        	where name=%s
-        """, (
-            self.prefix,
-            self.invoice_number(),
-            self.name,
-            self.initial_date,
-            self.final_date,
-            self.get_initial_number,
-            self.get_final_number,
-            pos_profile,
-            invoice
-        ))
-
     def set_fiscal_data_in_invoice(self, party):
         name = self.invoice_number()
 
@@ -122,9 +123,9 @@ class FiscalDocument(Document):
         party.initial_number = self.get_initial_number
         party.final_number = self.get_final_number
 
-    def validate_from_invoice(self):
-        self.validate_expired_document(True)
-        self.validate_current_position(True)
+    def validate_from_invoice(self, settings):
+        self.validate_expired_document(settings.date_range == 1)
+        self.validate_current_position(settings.billing_range == 1)
 
     def normalize_taxes(self, taxes):
         _taxes = []
@@ -152,9 +153,10 @@ class FiscalDocument(Document):
 def fiscal_document_data(doc, method=None):
     from fiscal_module.fiscal_module import api
     fiscal_document, pos_profile = api.fiscal_module_data(doc)
+    settings = frappe.get_single("Fiscal Module Settings")
 
     fiscal_document.validation_date = doc.posting_date
-    fiscal_document.validate_from_invoice()
+    fiscal_document.validate_from_invoice(settings)
     return fiscal_document, pos_profile
 
 
@@ -162,11 +164,7 @@ def validate_fiscal_document(doc, method=None):
     fiscal_document_data(doc)
 
 
-"""def set_fiscal_document_info(doc, method=None):
-    fiscal_document, pos_profile = fiscal_document_data(doc)
-    fiscal_document.set_fiscal_data_in_invoice(doc.name, pos_profile.name)"""
-
-
+# Set data in invoice
 def set_fiscal_document_info(doc, method=None):
     fiscal_document, pos_profile = fiscal_document_data(doc)
     fiscal_document.set_fiscal_data_in_invoice(doc)

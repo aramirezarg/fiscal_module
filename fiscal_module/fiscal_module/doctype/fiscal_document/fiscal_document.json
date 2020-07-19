@@ -24,7 +24,8 @@
   "current_position",
   "section_break_15",
   "notes",
-  "validation_date"
+  "validation_date",
+  "protected_current_position"
  ],
  "fields": [
   {
@@ -173,10 +174,18 @@
    "label": "Current Position",
    "show_days": 1,
    "show_seconds": 1
+  },
+  {
+   "fieldname": "protected_current_position",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Protected Current Position",
+   "show_days": 1,
+   "show_seconds": 1
   }
  ],
  "links": [],
- "modified": "2020-07-18 16:17:17.229944",
+ "modified": "2020-07-19 16:22:10.606355",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Document",
