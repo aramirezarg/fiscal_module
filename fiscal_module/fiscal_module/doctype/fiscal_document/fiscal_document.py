@@ -170,12 +170,25 @@ def validate_fiscal_document(doc, method=None):
 def set_fiscal_document_info(doc, method=None):
     fiscal_document, pos_profile = fiscal_document_data(doc)
 
-    if not doc.invoice_number:
-        fiscal_document.set_fiscal_data_in_invoice(doc)
+    #if not doc.invoice_number:
+    fiscal_document.set_fiscal_data_in_invoice(doc)
 
 
-def set_purchase_invoice_name(doc, method=None):
-    doc.name = doc.invoice_number
+def autoname_purchase_invoice(doc, method=None):
+    if doc.status != "Canceled":
+        doc.name = doc.invoice_number
+
+
+def on_cancel_purchase_invoice(doc, method=None):
+    #if doc.amended_from is not None:
+    frappe.rename_doc('Purchase Invoice', doc.name, f'{doc.name}_VOID')
+    frappe.publish_realtime("redirect_invoice_on_cancel", f'{doc.name}_VOID')
+
+
+def amend_purchase_invoice(doc, method=None):
+    if doc.amended_from is not None:
+        #frappe.rename_doc('Purchase Invoice', doc.name, f'{doc.invoice_number}')
+        doc.name = doc.invoice_number
 
 
 def test():

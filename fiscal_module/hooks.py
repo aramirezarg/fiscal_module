@@ -11,35 +11,34 @@ app_color = "grey"
 app_email = "info@ceti.systems"
 app_license = "MIT"
 
+# "on_load"
+# "on_create"
+# "on_update"
+# "on_submit"
 doc_events = {
     "Sales Invoice": {
         "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_load": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_link",
-        #"on_create": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_submit": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+        "on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
     },
     "Purchase Invoice": {
-        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_purchase_invoice_name",
+        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.autoname_purchase_invoice",
+        "on_cancel": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.on_cancel_purchase_invoice",
+        "on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.amend_purchase_invoice"
     },
     "Fees": {
-        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_load": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_link",
-        #"on_create": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_update": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
-        #"on_submit": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info",
+        "autoname": "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document.set_fiscal_document_info"
     },
 }
 
-#doctype_js = {
+# doctype_js = {
 #    "Sales Invoice": "public/js/payment_entry_doctype.js",
 #    "Purchase Invoice": "public/js/purchase_invoice_doctype.js"
-#}
+# }
 
-#fixtures = [
+# fixtures = [
 #    "Custom Script", {
 #        "dt": "Custom Field", "filters": [["dt", "in", ("Titulos", "Parcelas", "Payment Entry")]]}
-#]
+# ]
 
 # Includes in <head>
 # ------------------
