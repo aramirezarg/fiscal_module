@@ -28,7 +28,9 @@ doc_events = {
         "on_cancel": f"{base_fiscal_document}on_cancel_purchase_invoice"
     },
     "Fees": {
-        "autoname": f"{base_fiscal_document}set_fiscal_document_info"
+        "autoname": f"{base_fiscal_document}set_fiscal_document_info",
+        "on_update": f"{base_fiscal_document}validate_fiscal_document",
+        "on_submit": f"{base_fiscal_document}validate_fiscal_document"
     },
 }
 
@@ -90,7 +92,7 @@ doc_events = {
 # ------------
 
 # before_install = "fiscal_module.install.before_install"
-# after_install = "fiscal_module.install.after_install"
+after_install = "fiscal_module.setup.install.after_install"
 
 # Desk Notifications
 # ------------------
