@@ -20,17 +20,20 @@ base_fiscal_document = "fiscal_module.fiscal_module.doctype.fiscal_document.fisc
 doc_events = {
     "Sales Invoice": {
         "autoname": f"{base_fiscal_document}set_fiscal_document_info",
-        "on_update": f"{base_fiscal_document}validate_fiscal_document",
-        "on_submit": f"{base_fiscal_document}validate_fiscal_document"
+        #"on_update": f"{base_fiscal_document}validate_fiscal_document",
+        #"on_submit": f"{base_fiscal_document}validate_fiscal_document"
+    },
+    "Fees": {
+        "autoname": f"{base_fiscal_document}set_fiscal_document_info",
+        #"on_update": f"{base_fiscal_document}validate_fiscal_document",
+        #"on_submit": f"{base_fiscal_document}validate_fiscal_document"
     },
     "Purchase Invoice": {
         "autoname": f"{base_fiscal_document}autoname_purchase_invoice",
         "on_cancel": f"{base_fiscal_document}on_cancel_purchase_invoice"
     },
-    "Fees": {
-        "autoname": f"{base_fiscal_document}set_fiscal_document_info",
-        "on_update": f"{base_fiscal_document}validate_fiscal_document",
-        "on_submit": f"{base_fiscal_document}validate_fiscal_document"
+    "POS Profile": {
+        "on_update": f"{base_fiscal_document}validate_fiscal_documents_in_pos"
     },
 }
 
@@ -48,8 +51,6 @@ doc_events = {
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/fiscal_module/css/fiscal_module.css"
-# app_include_js = "/assets/fiscal_module/js/fiscal_module.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/fiscal_module/css/fiscal_module.css"

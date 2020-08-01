@@ -12,13 +12,26 @@ from frappe import _
 
 class FiscalDocument(Document):
     def autoname(self):
-        self.name = f'{self.fiscal_document} ({self.prefix})'
+        self.name = f'{self.fiscal_document} ({self.get_prefix})'
 
     def validate(self):
+        self.set_prefix()
+        self.validate_company()
         self.validate_expired_document()
         self.validate_current_position()
         self.validate_protected_current_position()
         self.validate_dates()
+
+    def set_prefix(self):
+        self.prefix = self.get_prefix
+
+    @property
+    def get_prefix(self):
+        return f"{self.establishment_id}-{self.emission_point_id}-{self.fiscal_document_type_id}"
+
+    def validate_company(self):
+        if self.establishment_id is None:
+            self.execute_validate("Set the Establishment Number in your Company", True)
 
     @property
     def fiscal_document_has_expired(self):
@@ -52,8 +65,10 @@ class FiscalDocument(Document):
             message = "There are no invoice numbers available for the active tax document"
             self.execute_validate(message, throw)
 
-    def validate_protected_current_position(self, throw=True):
-        if cint(self.current_position) + 1 <= cint(self.protected_current_position):
+    def validate_protected_current_position(self, throw=True, protected=None):
+        protected = frappe.get_value("Fiscal Document", self.name, "current_position") if protected is None else protected
+
+        if cint(self.current_position) != cint(protected):
             message = "The current position on your screen does not correspond to the last changes, please refresh"
             self.execute_validate(message, throw)
 
@@ -70,29 +85,29 @@ class FiscalDocument(Document):
         else:
             self.current_position = (cint(self.current_position) + 1)
 
-        invoice_number = f'{self.prefix}-{str(self.current_position).zfill(self.last_segment_length)}'
+        correlative = str(self.current_position).zfill(self.correlative_size)
+        invoice_number = f'{self.prefix}-{correlative}'
 
         self.validate_current_position(True)
         self.validate_unique_invoice(invoice_number)
 
         frappe.db.set_value("Fiscal Document", self.name, "current_position", self.current_position)
-        frappe.db.set_value("Fiscal Document", self.name, "protected_current_position", self.current_position)
 
-        return invoice_number
+        return invoice_number, correlative
 
     def date_range(self):
         return f'{self.get_formatted("initial_date")} - {self.get_formatted("final_date")}'
 
     def invoice_range(self):
-        return f'{self.prefix}-{str(self.initial_number).zfill(self.last_segment_length)} - {self.final_number}'
+        return f'{self.prefix}-{str(self.initial_number).zfill(self.correlative_size)} - {self.final_number}'
 
     @property
     def get_initial_number(self):
-        return f'{self.prefix}-{str(self.initial_number).zfill(self.last_segment_length)}'
+        return f'{self.prefix}-{str(self.initial_number).zfill(self.correlative_size)}'
 
     @property
     def get_final_number(self):
-        return f'{self.prefix}-{str(self.final_number).zfill(self.last_segment_length)}'
+        return f'{self.prefix}-{str(self.final_number).zfill(self.correlative_size)}'
 
     def fiscal_document_invoice(self, doc):
         from ceti.utils import money_in_words
@@ -112,7 +127,7 @@ class FiscalDocument(Document):
             return ''
 
     def set_fiscal_data_in_invoice(self, party):
-        name = self.invoice_number()
+        name, correlative = self.invoice_number()
 
         party.name = name
         party.invoice_number = name
@@ -122,6 +137,15 @@ class FiscalDocument(Document):
         party.final_date = self.final_date
         party.initial_number = self.get_initial_number
         party.final_number = self.get_final_number
+
+        if party.doctype != "Purchase Invoice":
+            self.set_fiscal_document_dependencies(party, correlative)
+
+    def set_fiscal_document_dependencies(self, party, correlative):
+        party.establishment = self.establishment_id
+        party.emission_point = self.emission_point_id
+        party.fiscal_document_type = self.fiscal_document_type_id
+        party.correlative = correlative
 
     def validate_from_invoice(self, settings):
         self.validate_expired_document(settings.date_range == 1)
@@ -161,7 +185,17 @@ def fiscal_document_data(doc, method=None):
 
 
 def validate_fiscal_document(doc, method=None):
-    fiscal_document_data(doc)
+    if frappe.get_value("Sales Invoice", doc.name) == 1:
+        pass
+    else:
+        if doc.fiscal_document:
+            fiscal_document = frappe.get_doc("Fiscal Document", doc.fiscal_document)
+            settings = frappe.get_single("Fiscal Module Settings")
+
+            fiscal_document.validation_date = doc.posting_date
+            fiscal_document.validate_from_invoice(settings)
+        else:
+            fiscal_document_data(doc)
 
 
 # Set data in invoice
@@ -179,6 +213,18 @@ def on_cancel_purchase_invoice(doc, method=None):
     if doc.amended_from is not None:
         frappe.rename_doc('Purchase Invoice', doc.name, f'{doc.name}_VOID')
         frappe.publish_realtime("redirect_invoice_on_cancel", f'{doc.name}_VOID')
+
+
+def validate_fiscal_documents_in_pos(doc, method=None):
+    checks = []
+    for fd in doc.fiscal_document:
+        if frappe.get_value("Fiscal Document", fd.fiscal_document, "company") != doc.company:
+            frappe.throw(_('The Fiscal Document must belong to the company {0}').format(doc.company))
+
+        checks.append(fd.fiscal_document)
+
+    if len(checks) != len(set(checks)):
+        frappe.throw(_('The Fiscal Document must be unique'))
 
 
 @frappe.whitelist()

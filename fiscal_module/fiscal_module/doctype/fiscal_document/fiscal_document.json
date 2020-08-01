@@ -5,27 +5,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "company",
+  "emission_point_id",
+  "column_break_01",
+  "establishment_id",
+  "fiscal_document_type",
+  "section_break_6",
   "fiscal_document",
+  "prefix",
   "column_break_2",
   "description",
-  "section_break_prefix",
-  "prefix",
-  "section_break_last_segment_length",
-  "last_segment_length",
+  "correlative_size",
   "section_break_4",
   "initial_date",
+  "initial_number",
   "column_break_6",
   "final_date",
+  "final_number",
   "section_break_8",
-  "initial_number",
   "status",
   "column_break_11",
-  "final_number",
   "current_position",
-  "section_break_15",
-  "notes",
   "validation_date",
-  "protected_current_position"
+  "fiscal_document_type_id"
  ],
  "fields": [
   {
@@ -33,59 +35,43 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Fiscal Document",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "column_break_2",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "section_break_4",
-   "fieldtype": "Section Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "initial_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Initial Date",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "column_break_6",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "final_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Final Date",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "section_break_8",
-   "fieldtype": "Section Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "initial_number",
    "fieldtype": "Int",
    "label": "Initial Number",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "default": "Created",
@@ -93,99 +79,96 @@
    "fieldtype": "Select",
    "label": "Status",
    "options": "Created\nApproved\nDisabled",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "column_break_11",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "final_number",
    "fieldtype": "Int",
    "label": "Final Number",
    "precision": "0",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "description",
    "fieldtype": "Data",
    "label": "Description",
-   "show_days": 1,
-   "show_seconds": 1
-  },
-  {
-   "fieldname": "section_break_15",
-   "fieldtype": "Section Break",
-   "show_days": 1,
-   "show_seconds": 1
-  },
-  {
-   "fieldname": "notes",
-   "fieldtype": "Text",
-   "label": "Notes",
-   "show_days": 1,
-   "show_seconds": 1
-  },
-  {
-   "fieldname": "section_break_prefix",
-   "fieldtype": "Section Break",
-   "show_days": 1,
-   "show_seconds": 1
-  },
-  {
-   "fieldname": "section_break_last_segment_length",
-   "fieldtype": "Column Break",
-   "show_days": 1,
-   "show_seconds": 1
-  },
-  {
-   "fieldname": "last_segment_length",
-   "fieldtype": "Int",
-   "label": "Last Segment Length",
-   "show_days": 1,
-   "show_seconds": 1
+   "reqd": 1
   },
   {
    "fieldname": "prefix",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Prefix",
-   "reqd": 1,
-   "show_days": 1,
-   "show_seconds": 1
+   "no_copy": 1,
+   "read_only": 1
   },
   {
    "fieldname": "validation_date",
    "fieldtype": "Date",
    "hidden": 1,
-   "label": "Validatiorn Date",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Validatiorn Date"
   },
   {
    "fieldname": "current_position",
    "fieldtype": "Data",
-   "label": "Current Position",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Current Position"
   },
   {
-   "fieldname": "protected_current_position",
-   "fieldtype": "Int",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fiscal_document_type",
+   "fieldtype": "Link",
+   "label": "Document Type",
+   "options": "Fiscal Document Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "fiscal_document_type.identifier",
+   "fieldname": "fiscal_document_type_id",
+   "fieldtype": "Data",
    "hidden": 1,
-   "label": "Protected Current Position",
-   "show_days": 1,
-   "show_seconds": 1
+   "label": "Fiscal Document Type Id",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "correlative_size",
+   "fieldtype": "Int",
+   "label": "Correlative Size ",
+   "reqd": 1
+  },
+  {
+   "fieldname": "emission_point_id",
+   "fieldtype": "Data",
+   "label": "Emission Point",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "company.establishment",
+   "fieldname": "establishment_id",
+   "fieldtype": "Read Only",
+   "label": "Establishment",
+   "no_copy": 1
   }
  ],
  "links": [],
- "modified": "2020-07-19 16:22:10.606355",
+ "modified": "2020-07-27 22:27:32.818237",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Document",
@@ -205,7 +188,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "search_fields": "fiscal_document",
  "show_preview_popup": 1,
  "sort_field": "modified",

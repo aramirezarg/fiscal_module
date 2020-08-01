@@ -16,8 +16,8 @@ def add_custom_field(doctype, options):
     label = get_option(options, "label", "")
     fieldtype = get_option(options, "fieldtype")
     option = get_option(options, "options", label if fieldtype == "Link" else "")
-    name = f'{doctype}-{get_option(options, "fieldname", frappe.scrub(label))}'
     fieldname = get_option(options, "fieldname", frappe.scrub(label))
+    name = f'{doctype}-{fieldname}'
 
     if frappe.get_value("Custom Field", name) is None:
         cf = frappe.new_doc("Custom Field")
@@ -27,13 +27,14 @@ def add_custom_field(doctype, options):
         cf.label = label
         cf.fieldtype = fieldtype
         cf.options = option
-        cf.reqd = get_option(options, "reqd", '0')
-        cf.no_copy = get_option(options, "no_copy", '1')
+        cf.reqd = get_option(options, "reqd", 0)
+        cf.no_copy = get_option(options, "no_copy", 1)
         cf.insert_after = get_option(options, "insert_after")
-        cf.hidden = get_option(options, "hidden", "0"),
-        cf.fetch_from = get_option(options, "insert_after", ""),
-        cf.print_hide = get_option(options, "insert_after", "0"),
-        cf.read_only = get_option(options, "insert_after", "1"),
+        cf.hidden = get_option(options, "hidden", 0)
+        cf.fetch_from = get_option(options, "fetch_from", "")
+        cf.print_hide = get_option(options, "print_hide", 0)
+        cf.read_only = get_option(options, "read_only", 1)
+        cf.translatable = 0
         cf.save()
 
 
@@ -59,9 +60,24 @@ def set_custom_scripts():
     for doc in ["Purchase Invoice", "Sales Invoice", "Fees"]:
         if frappe.get_value("Custom Script", {"dt": doc}) is None:
             CS = frappe.new_doc("Custom Script")
-            CS.dt =doc
+            CS.dt = doc
             CS.script = """setInterval(()=>{ $("div[data-fieldname='naming_series']").hide()}, 500)"""
             CS.save()
+
+    CS = frappe.new_doc("Custom Script")
+    CS.dt = "POS Profile"
+    CS.script = """
+        frappe.ui.form.on("POS Profile", "refresh", function(frm) {
+            frm.fields_dict['fiscal_document'].grid.get_field('fiscal_document').get_query = (doc, cdt, cdn) => {
+                var child = locals[cdt][cdn];
+                return {    
+                    filters:[
+                        ['company', '=', frm.doc.company]
+                    ]
+                }
+            }
+        });"""
+    CS.save()
 
 
 def create_documents_structure():
@@ -79,14 +95,14 @@ def create_documents_structure():
             fieldname="fiscal_document_description", fieldtype="Read Only",
             fetch_from='fiscal_document.fiscal_document'
         ),
-        'Initial Number': dict(fieldtype="Int"),
-        'Final Number': dict(fieldtype="Int"),
+        'Initial Number': dict(),
+        'Final Number': dict(),
         'fiscal_document_section_break2': dict(fieldtype="Section Break", no_label=True),
 
-        'Branch Office': dict(hidden='1', print_hide='1'),
-        'Emission Point': dict(hidden='1', print_hide='1'),
-        'Fiscal Document Type': dict(hidden='1', print_hide='1'),
-        'Correlative': dict(hidden='1', print_hide='1'),
+        'Establishment': dict(hidden=1, print_hide=1),
+        'Emission Point': dict(hidden=1, print_hide=1),
+        'Fiscal Document Type': dict(hidden=1, print_hide=1),
+        'Correlative': dict(hidden=1, print_hide=1),
     }
 
     doctypes = ["Sales Invoice", "Fees", "Purchase Invoice"]
@@ -96,18 +112,20 @@ def create_documents_structure():
         for f in fields:
             field = fields[f]
 
-            if doctype == "Purchase Invoice" and \
-                    f in ["Invoice Number", "Initial Date", "Final Date",
-                          "Initial Number", "Final Number", "Fiscal Document Info",
-                          "fiscal_document_section_break1", "fiscal_document_section_break2"]:
+            if doctype == "Purchase Invoice" and f in [
+                "Invoice Number", "Initial Date", "Final Date",
+                "Initial Number", "Final Number", "Fiscal Document Info",
+                "fiscal_document_section_break1", "fiscal_document_section_break2",
+                "Branch Office", "Emission Point", "Fiscal Document Type", "Correlative", "CAI"
+            ]:
                 pass
             else:
                 no_label = get_option(field, "no_label", False)
                 label = get_option(field, "label", "" if no_label else f)
                 fieldname = get_option(field, "fieldname", frappe.scrub(f))
                 fieldtype = get_option(field, "fieldtype", "Data")
-                read_only = get_option(field, "read_only", '1')
-                hidden = get_option(field, "hidden", '1')
+                read_only = get_option(field, "read_only", 1)
+                hidden = get_option(field, "hidden", 0)
                 options = get_option(field, "options", label if fieldtype == "Link" else "")
                 reqd = 0
 
@@ -131,11 +149,11 @@ def create_documents_structure():
                     options=options,
                     fetch_from=get_option(field, "fetch_from"),
                     hidden=hidden,
-                    print_hide=get_option(field, "print_hide", '0'),
+                    print_hide=get_option(field, "print_hide", 0),
                     reqd=reqd,
                     read_only=read_only,
                 ))
-                insert_after = get_option(field, "insert_after", f)
+                insert_after = get_option(field, "insert_after", fieldname)
 
     add_custom_field("Fees", dict(
         label="POS Profile",
@@ -146,16 +164,20 @@ def create_documents_structure():
         label="Fiscal Document",
         fieldtype="Table",
         options="POS Fiscal Document",
-        read_only=0
+        read_only=0,
+        reqd=1
     ))
 
     add_custom_field("POS Profile", dict(
         label="Device",
         fieldtype="Link",
-        read_only=0
+        read_only=0,
+        reqd=1
     ))
 
     add_custom_field("Company", dict(
-        label="Branch Office Id",
-        read_only=0
+        label="Establishment",
+        read_only=0,
+        reqd=1,
+        unique=1
     ))
