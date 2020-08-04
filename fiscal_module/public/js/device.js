@@ -1,7 +1,7 @@
 window["device_id"] = null;
 window["deviceComponents"] = [];
 
-var DeviceInfo = function () {
+function DeviceInfo() {
     let options = {
         excludes: {
             userAgent: true,
@@ -12,15 +12,18 @@ var DeviceInfo = function () {
         }
     }
 
-    Fingerprint2.get(options, function (components) {
-        window["deviceComponents"] = components;
+    setTimeout(() => {
+        Fingerprint2.get(options, function (components) {
+            window["deviceComponents"] = components;
 
-        window["device_id"] = Fingerprint2.x64hash128(components.map(function (pair) {
-            return pair.value
-        }).join(), 31)
+            window["device_id"] = Fingerprint2.x64hash128(components.map(function (pair) {
+                return pair.value
+            }).join(), 31)
 
-        set_device_id();
-    })
+            set_device_id();
+        })
+    },0)
+
 }
 
 function set_device_id(){
@@ -36,18 +39,6 @@ function set_device_id(){
                 console.log(r);
             },
         });
-
-        /*setTimeout(() => {
-            //console.log(frappe.get_cookie("device_id"));
-            //console.log(frappe.get_cookie("full_name"));
-            frappe.call({
-                method: url_manage + "test_device_id",
-                args: {device_id: window["device_id"]},
-                always: (r) => {
-                    console.log(r);
-                },
-            });
-        }, 3000)*/
     }else{
         setTimeout(() => {
             set_device_id();
