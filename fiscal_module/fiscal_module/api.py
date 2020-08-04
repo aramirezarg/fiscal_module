@@ -104,32 +104,33 @@ def set_device_id(device_id):
     if cookie_device_id is not None:
           # frappe.local.cookie_manager.cookies["device_id"]
         if frappe.get_value("Device", cookie_device_id) is not None:
-            if frappe.device_id != device_id:
+            if cookie_device_id != device_id:
                 frappe.rename_doc('Device', cookie_device_id, device_id)
                 frappe.db.set_value("Device", device_id, "identifier", device_id)
         else:
-            identifier_device(device_id)
+            Device.set_identifier(device_id)
     else:
-        identifier_device(device_id)
+        Device.set_identifier(device_id)
 
-    return frappe.local.cookie_manager.cookies, Device.identifier()
+    d = None
+    if hasattr(frappe.local.cookie_manager, "cookies"):
+        if "device_id" in frappe.local.cookie_manager.cookies:
+            d = frappe.local.cookie_manager.cookies["device_id"]["value"]
+    else:
+        d = "None"
+
+    return [
+        frappe.local.cookie_manager.cookies,
+        d,
+        Device.identifier(),
+        frappe.cache().hget('device_id', 'device_id')
+    ]#, frappe.get_request_header#("device_id")
 
 
 @frappe.whitelist()
 def test_device_id():
-    return frappe.local.cookie_manager.cookies, Device.identifier()
-
-
-def identifier_device(device_id):
-    # frappe.local.cookie_manager.init_cookies()
-    # expires = datetime.datetime.now() + datetime.timedelta(days=(365 * 10))
-    # frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires, httponly=True)
-
-    frappe.device_id = device_id
-
-    if frappe.get_value("Device", device_id) is None:
-        doc = frappe.new_doc("Device")
-        doc.workstation_name = f"Workstation {frappe.db.count('Device') + 1}"
-        doc.identifier = device_id
-        doc.company = frappe.defaults.get_user_default('company')
-        doc.save()
+    return [
+        frappe.local.cookie_manager.cookies,
+        Device.identifier1(),
+        frappe.cache().hget('device_id', 'device_id')
+    ]
