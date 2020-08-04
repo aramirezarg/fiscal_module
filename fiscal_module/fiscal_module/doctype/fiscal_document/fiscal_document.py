@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from datetime import datetime
 from frappe.utils import date_diff, cint, cstr
 from frappe import _
+from fiscal_module.fiscal_module.api import DeviceManage
 
 
 class FiscalDocument(Document):
@@ -126,10 +127,11 @@ class FiscalDocument(Document):
         else:
             return ''
 
-    def set_fiscal_data_in_invoice(self, party):
+    def set_fiscal_data_in_invoice(self, party, pos_profile):
         name, correlative = self.invoice_number()
 
         party.name = name
+        party.pos_profile = pos_profile
         party.invoice_number = name
         party.fiscal_document = self.name
         party.fiscal_document_description = self.fiscal_document
@@ -174,10 +176,12 @@ class FiscalDocument(Document):
         pass
 
 
-def fiscal_document_data(doc, method=None):
-    from fiscal_module.fiscal_module import api
-    fiscal_document, pos_profile = api.fiscal_module_data(doc)
-    settings = frappe.get_single("Fiscal Module Settings")
+def fiscal_document_data(doc):
+    settings = DeviceManage.settings()
+    device = DeviceManage.get_current(settings)
+
+    pos_profile = device.get_pos_profile
+    fiscal_document = device.get_active_fiscal_document
 
     fiscal_document.validation_date = doc.posting_date
     fiscal_document.validate_from_invoice(settings)
@@ -201,7 +205,7 @@ def validate_fiscal_document(doc, method=None):
 # Set data in invoice
 def set_fiscal_document_info(doc, method=None):
     fiscal_document, pos_profile = fiscal_document_data(doc)
-    fiscal_document.set_fiscal_data_in_invoice(doc)
+    fiscal_document.set_fiscal_data_in_invoice(doc, pos_profile.name)
 
 
 def autoname_purchase_invoice(doc, method=None):
@@ -213,18 +217,6 @@ def on_cancel_purchase_invoice(doc, method=None):
     if doc.amended_from is not None:
         frappe.rename_doc('Purchase Invoice', doc.name, f'{doc.name}_VOID')
         frappe.publish_realtime("redirect_invoice_on_cancel", f'{doc.name}_VOID')
-
-
-def validate_fiscal_documents_in_pos(doc, method=None):
-    checks = []
-    for fd in doc.fiscal_document:
-        if frappe.get_value("Fiscal Document", fd.fiscal_document, "company") != doc.company:
-            frappe.throw(_('The Fiscal Document must belong to the company {0}').format(doc.company))
-
-        checks.append(fd.fiscal_document)
-
-    if len(checks) != len(set(checks)):
-        frappe.throw(_('The Fiscal Document must be unique'))
 
 
 @frappe.whitelist()
@@ -252,3 +244,7 @@ def fix_invoices():
             user=frappe.session.user
         )
         count += 1
+
+@frappe.whitelist()
+def test_device_id():
+    return frappe.local.cookie_manager.cookies

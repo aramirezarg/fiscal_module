@@ -32,10 +32,15 @@ doc_events = {
         "autoname": f"{base_fiscal_document}autoname_purchase_invoice",
         "on_cancel": f"{base_fiscal_document}on_cancel_purchase_invoice"
     },
-    "POS Profile": {
-        "on_update": f"{base_fiscal_document}validate_fiscal_documents_in_pos"
-    },
+    #"POS Profile": {
+    #    "on_update": f"{base_fiscal_document}validate_fiscal_documents_in_pos"
+    #},
 }
+
+app_include_js = [
+    "/assets/fiscal_module/js/fingerprint2.js",
+    "/assets/fiscal_module/js/device.js"
+]
 
 # doctype_js = {
 #    "Sales Invoice": "public/js/payment_entry_doctype.js",

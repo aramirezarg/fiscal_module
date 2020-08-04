@@ -1,0 +1,8 @@
+.navbar-default .navbar-brand.navbar-home {
+    display: block !important;
+}
+
+.device-container {
+    #position: absolute;
+    overflow: paged-x;
+}

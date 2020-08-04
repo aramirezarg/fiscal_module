@@ -24,7 +24,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Fiscal Module",
- "modified": "2020-07-26 21:53:33.320982",
+ "modified": "2020-08-01 21:49:40.564300",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Module",
@@ -64,6 +64,12 @@
    "link_to": "Sales Invoice",
    "stats_filter": "{ \"status\": \"Draft\" }",
    "type": "DocType"
+  },
+  {
+   "icon": "fa fa-laptop",
+   "label": "Device Info",
+   "link_to": "Device Info",
+   "type": "Page"
   }
  ]
 }
