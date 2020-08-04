@@ -27,7 +27,6 @@ function DeviceInfo() {
 }
 
 function set_device_id(){
-
     if(window["device_id"] != null){
          console.log("client device id: " + window["device_id"])
         let url_manage = "fiscal_module.fiscal_module.api.";
