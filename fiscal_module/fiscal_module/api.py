@@ -8,6 +8,7 @@ from frappe import _
 from fiscal_module.fiscal_module.doctype.device.device import Device
 import datetime
 
+
 class DeviceManage:
     @staticmethod
     def settings():
@@ -17,6 +18,8 @@ class DeviceManage:
     def get_current(settings):
         settings = DeviceManage.settings() if settings is None else settings
         return Device.get_current(settings)
+
+
 """
     @staticmethod
     def has_device(settings):
@@ -98,7 +101,7 @@ class DeviceManage:
 @frappe.whitelist()
 def set_device_id(device_id):
     if not Device.identifier():
-        cookie_device_id = Device.identifier()# frappe.local.cookie_manager.cookies["device_id"]
+        cookie_device_id = Device.identifier()  # frappe.local.cookie_manager.cookies["device_id"]
 
         if frappe.get_value("Device", cookie_device_id):
             if frappe.device_id != device_id:
@@ -118,9 +121,9 @@ def test_device_id():
 
 
 def identifier_device(device_id):
-    frappe.local.cookie_manager.init_cookies()
-    expires = datetime.datetime.now() + datetime.timedelta(days=(365 * 10))
-    frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires, httponly=True)
+    # frappe.local.cookie_manager.init_cookies()
+    # expires = datetime.datetime.now() + datetime.timedelta(days=(365 * 10))
+    # frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires, httponly=True)
 
     frappe.device_id = device_id
 
