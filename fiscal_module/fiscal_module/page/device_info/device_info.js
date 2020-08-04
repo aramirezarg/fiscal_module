@@ -12,11 +12,11 @@ frappe.pages['Device Info'].on_page_load = function (wrapper) {
 
 function device_check(page, wrapper){
     setTimeout(() => {
-        if(window["device_id"] == null) {
+        if(Device.id == null) {
             page.set_title(`${__("Loading device Info")}`)
             device_check();
         } else{
-            page.set_title(`<strong>${__("Device")}</strong>: <small>${window["device_id"]}</small>`)
+            page.set_title(`<strong>${__("Device")}</strong>: <small>${Device.id}</small>`)
             new DeviceManage(wrapper, page);
         }
     }, 100)
@@ -29,7 +29,7 @@ DeviceManage = class DeviceManage {
         this.base_wrapper = $(wrapper);
         this.wrapper = $(wrapper).find('.layout-main-section');
         this.edit_form = null;
-        this.id = window["device_id"];
+        this.id = Device.id;
         this.url_manage = "fiscal_module.fiscal_module.page.device_info.device_info.";
 
         const assets = [
@@ -73,8 +73,8 @@ DeviceManage = class DeviceManage {
     prepare_dom() {
         let components = "<table class='table table-condensed table-responsive'><tbody>";
 
-        for (var index in window["deviceComponents"]) {
-            var obj = window["deviceComponents"][index];
+        for (var index in Device.components) {
+            var obj = Device.components[index];
             components += `
                 <tr>
                     <th>${obj.key}</th>

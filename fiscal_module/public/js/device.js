@@ -1,85 +1,91 @@
-window["device_id"] = null;
-window["deviceComponents"] = [];
+class CurrentDevice {
+    constructor() {
+        this.id = null;
+        this.url_manage = "fiscal_module.fiscal_module.api.";
+        this.components = [];
+        this.construct();
+    }
 
-function DeviceInfo() {
-    let options = {
-        excludes: {
-            userAgent: true,
-            language: true,
-            fonts: true,
-            adBlock: true,
-            plugins: true,
-            enumerateDevices: true
+    construct() {
+        this.send_device_id_to_server();
+    }
+
+    send_device_id_to_server(){
+        this.set_device_id();
+
+        if(this.id != null){
+            this.persistent_name();
+
+            frappe.call({
+                method: this.url_manage + "set_device_id",
+                args: {device_id: this.id},
+                always: (r) => {
+                    console.log(r);
+                },
+            });
+
+            setTimeout(() => {
+                 frappe.call({
+                    method: this.url_manage + "test_device_id",
+                    //args: {device_id: this.id},
+                    always: (r) => {
+                        console.log(r);
+                    },
+                });
+            },2000)
+        }else{
+            setTimeout(() => {
+                this.send_device_id_to_server();
+            }, 0)
         }
     }
 
-    setTimeout(() => {
-        Fingerprint2.get(options, function (components) {
-            window["deviceComponents"] = components;
+    excludes_components(){
+        return {
+            excludes: {
+                userAgent: true,
+                language: true,
+                fonts: true,
+                adBlock: true,
+                plugins: true,
+                enumerateDevices: true
+            }
+        }
+    }
 
-            window["device_id"] = Fingerprint2.x64hash128(components.map(function (pair) {
-                return pair.value
-            }).join(), 31)
+    set_device_id(){
+        let options = {
+            excludes: this.excludes_components()
+        }
 
-            set_device_id();
-        })
-    },0)
-
-}
-
-function set_device_id(){
-    let url_manage = "fiscal_module.fiscal_module.api.";
-    if(window["device_id"] != null){
-        setCookie("device_id", window["device_id"], (365*10));
-        console.log("client device id: " + window["device_id"]);
-
-        frappe.call({
-            method: url_manage + "set_device_id",
-            args: {device_id: window["device_id"]},
-            always: (r) => {
-                console.log(r);
-            },
-        });
-    }else{
         setTimeout(() => {
-            set_device_id();
-        }, 0)
+            Fingerprint2.get(options, (components) => {
+                this.components = components;
+
+                this.id = Fingerprint2.x64hash128(components.map((pair) => {
+                    return pair.value
+                }).join(), 31)
+            })
+        },0)
     }
 
-    setTimeout(() => {
-        frappe.call({
-            method: url_manage + "test_device_id",
-            always: (r) => {
-                console.log(r);
-            },
-        });
-    }, 2000)
-}
+    persistent_name() {
+        let date = new Date();
+        date.setTime(date.getTime() + (100*24*60*60*1000));
+        let expires = "; expires=" + date.toUTCString();
 
-if (window.requestIdleCallback) {
-    requestIdleCallback(DeviceInfo);
-    //requestIdleCallback(set_device_id);
-} else {
-   setTimeout(DeviceInfo, 0);
-   //setTimeout(set_device_id, 0);
-}
+        document.cookie = `device_id=${this.id} ${expires} ; path=/`;
+    }
 
-function setCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
+    get_persistent_name() {
+        let nameEQ ="device_id=";
+        let ca = document.cookie.split(';');
+        for(let i=0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)===' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }
-function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
+Device = new CurrentDevice();

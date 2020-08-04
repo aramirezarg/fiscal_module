@@ -123,7 +123,8 @@ def set_device_id(device_id):
         frappe.local.cookie_manager.cookies,
         d,
         Device.identifier(),
-        frappe.cache().hget('device_id', 'device_id')
+        frappe.cache().hget('device_id', 'device_id'),
+        Device.identifier1()
     ]#, frappe.get_request_header#("device_id")
 
 
@@ -131,6 +132,7 @@ def set_device_id(device_id):
 def test_device_id():
     return [
         frappe.local.cookie_manager.cookies,
-        Device.identifier1(),
-        frappe.cache().hget('device_id', 'device_id')
+        #Device.identifier1(),
+        #frappe.cache().hget('device_id', 'device_id'),
+        Device.identifier1()
     ]

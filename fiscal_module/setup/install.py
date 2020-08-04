@@ -160,7 +160,7 @@ def create_documents_structure():
         fieldtype="Link"
     ))
 
-    add_custom_field("POS Profile", dict(
+    """add_custom_field("POS Profile", dict(
         label="Fiscal Document",
         fieldtype="Table",
         options="POS Fiscal Document",
@@ -173,7 +173,7 @@ def create_documents_structure():
         fieldtype="Link",
         read_only=0,
         reqd=1
-    ))
+    ))"""
 
     add_custom_field("Company", dict(
         label="Establishment",

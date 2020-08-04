@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:identifier",
  "creation": "2020-04-11 12:11:06.294519",
  "doctype": "DocType",
@@ -83,7 +84,7 @@
  ],
  "in_create": 1,
  "links": [],
- "modified": "2020-08-03 10:35:12.417296",
+ "modified": "2020-08-04 14:47:12.877149",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Device",
