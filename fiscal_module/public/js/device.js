@@ -8,7 +8,8 @@ function DeviceInfo() {
             language: true,
             fonts: true,
             adBlock: true,
-            plugins: true
+            plugins: true,
+            enumerateDevices: true
         }
     }
 
