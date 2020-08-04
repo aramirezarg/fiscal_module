@@ -24,14 +24,16 @@ let DeviceInfo = function () {
 }
 
 function set_device_id(){
+
     if(window["device_id"] != null){
+         console.log("client device id: " + window["device_id"])
         let url_manage = "fiscal_module.fiscal_module.api.";
 
         frappe.call({
             method: url_manage + "set_device_id",
             args: {device_id: window["device_id"]},
             always: (r) => {
-                //console.log(r);
+                console.log(r);
             },
         });
 
