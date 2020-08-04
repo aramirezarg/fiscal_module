@@ -114,17 +114,16 @@ class Device(Document):
 
     @staticmethod
     def set_identifier(device_id):
-        import datetime
-        expires = datetime.datetime.now() + datetime.timedelta(days=2)
+        # import datetime
+        # expires = datetime.datetime.now() + datetime.timedelta(days=2)
         frappe.cache().hset('device_id', "device_id", device_id)
 
-        if hasattr(frappe.local, "cookie_manager"):
+        # if hasattr(frappe.local, "cookie_manager"):
+        # frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires, httponly=False)
 
-            frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires, httponly=False)
-
-            if frappe.get_value("Device", device_id) is None:
-                doc = frappe.new_doc("Device")
-                doc.workstation_name = f"Workstation {frappe.db.count('Device') + 1}"
-                doc.identifier = device_id
-                doc.company = frappe.defaults.get_user_default('company')
-                doc.save()
+        if frappe.get_value("Device", device_id) is None:
+            doc = frappe.new_doc("Device")
+            doc.workstation_name = f"Workstation {frappe.db.count('Device') + 1}"
+            doc.identifier = device_id
+            doc.company = frappe.defaults.get_user_default('company')
+            doc.save()
