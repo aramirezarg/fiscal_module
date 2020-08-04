@@ -1,7 +1,7 @@
 window["device_id"] = null;
 window["deviceComponents"] = [];
 
-let DeviceInfo = function () {
+var DeviceInfo = function () {
     let options = {
         excludes: {
             userAgent: true,
