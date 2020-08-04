@@ -42,14 +42,12 @@ class CurrentDevice {
 
     excludes_components(){
         return {
-            excludes: {
-                userAgent: true,
-                language: true,
-                fonts: true,
-                adBlock: true,
-                plugins: true,
-                enumerateDevices: true
-            }
+            userAgent: true,
+            language: true,
+            fonts: true,
+            adBlock: true,
+            plugins: true,
+            enumerateDevices: true
         }
     }
 
