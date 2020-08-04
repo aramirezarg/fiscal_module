@@ -1,0 +1,24 @@
+{
+ "content": null,
+ "creation": "2020-05-24 20:32:58.665216",
+ "docstatus": 0,
+ "doctype": "Page",
+ "icon": "fa fa-laptop",
+ "idx": 0,
+ "modified": "2020-08-03 22:38:35.787811",
+ "modified_by": "Administrator",
+ "module": "Fiscal Module",
+ "name": "Device Info",
+ "owner": "Administrator",
+ "page_name": "Device Info",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Device Info"
+}
