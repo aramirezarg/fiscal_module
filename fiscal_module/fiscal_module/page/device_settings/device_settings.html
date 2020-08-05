@@ -1,0 +1,168 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-widget widget-panel">
+            <div class="widget-panel-header">
+                <table style="width: 100%">
+                    <tr>
+                        <td style="min-width: 70px; max-width: 70px">
+                            <span class="widget-icon fa fa-gears"></span>
+                        </td>
+                        <td style="width: 100%">
+                            <h3 class="widget-user-username">{{ _("Device Settings") }}</h3>
+                            <h5 class="widget-user-desc">{{ doc.workstation_name }}</h5>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                    <li>
+                        <a href="#">{{ _("Company") }}
+                            <span class="pull-right badge-box bg-blue">{{ doc.company }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">{{ _("POS Profile") }}
+                            <span class="pull-right badge-box bg-aqua">{{ doc.pos_profile }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">{{ _("User") }}
+                            <span class="pull-right badge-box bg-green">{{ doc.user }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="box box-widget widget-panel">
+            <div class="widget-panel-header">
+                <table style="width: 100%">
+                    <tr>
+                        <td style="min-width: 70px; max-width: 70px">
+                            <span class="widget-icon fa fa-laptop"></span>
+                        </td>
+                        <td style="width: 100%">
+                            <h3 class="widget-user-username">Device Info</h3>
+                            <h5 class="widget-user-desc">{{ data.session_ip }}</h5>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                    <li><a href="#">Device Type <span class="pull-right badge-box bg-blue">{{ data.device }}</span></a></li>
+                    <li><a href="#">Language <span class="pull-right badge-box bg-aqua">{{ data.lang }}</span></a></li>
+                    <li><a href="#">Other <span class="pull-right badge-box bg-green">Other</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .box-widget {
+        border: none;
+        position: relative;
+        color: #132b39;
+    }
+
+    .widget-icon {
+        font-size: 50px;
+    }
+
+    .box {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border-top: 3px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .widget-panel .widget-panel-header {
+        padding: 10px;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+        background-color: #d2d6de;
+    }
+
+    .widget-panel .widget-user-username {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 25px;
+        font-weight: 300;
+    }
+
+    .widget-panel .widget-user-desc {
+        margin-top: 0;
+    }
+
+    .no-padding {
+        padding: 0 !important;
+    }
+
+    .box-footer {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border-top: 1px solid #f4f4f4;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .box-footer .nav {
+        padding-left: 0 !important;
+        margin-bottom: 0 !important;
+        list-style: none !important;
+    }
+
+    .box .nav-stacked > li {
+        border-bottom: 1px solid #f4f4f4;
+        margin: 0;
+    }
+
+    .box-footer .nav.nav-stacked > li > a {
+        border-radius: 0 !important;
+        border-top: 0 !important;
+        border-left: 3px solid transparent !important;
+        pointer-events: none;
+    }
+
+    .box-footer .nav > li > a {
+        position: relative !important;
+        display: block !important;
+        padding: 20px 15px !important;
+    }
+
+    .box-footer .nav.nav-stacked > a {
+        color: #3c8dbc;
+    }
+
+    .box-footer .nav.nav-stacked > a {
+        text-decoration: none;
+    }
+
+    .box-footer .nav.nav-stacked > a {
+        background-color: transparent;
+    }
+
+    .box-footer .nav.nav-stacked .badge-box {
+        display: inline-block;
+        min-width: 10px;
+        margin-top: -5px !important;
+        padding: 3px 7px !important;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        color: #102340;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        background-color: #d2d6de;
+        border-radius: 10px;
+    }
+</style>

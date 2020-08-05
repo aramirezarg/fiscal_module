@@ -19,7 +19,7 @@ function device_check(page, wrapper){
             page.set_title(`<strong>${__("Device")}</strong>: <small>${Device.id}</small>`)
             new DeviceManage(wrapper, page);
         }
-    }, 100)
+    }, 200)
 }
 
 
@@ -30,6 +30,7 @@ DeviceManage = class DeviceManage {
         this.wrapper = $(wrapper).find('.layout-main-section');
         this.edit_form = null;
         this.id = Device.id;
+        this.head = "";
         this.url_manage = "fiscal_module.fiscal_module.page.device_settings.device_settings.";
 
         const assets = [
@@ -49,7 +50,8 @@ DeviceManage = class DeviceManage {
             () => frappe.dom.freeze(),
             () => {
                 this.get_device().then((r) => {
-                    this.doc = r;
+                    this.doc = r[0];
+                    this.head = r[1];
 					this.prepare_dom();
 				});
             },
@@ -101,14 +103,7 @@ DeviceManage = class DeviceManage {
         this.wrapper.append(`
 			<div class="device-container">
 			    <div class="components-container">
-			        <div class="row">
-                        <div class="col-sm-6">
-                            <h4>ID: ${this.doc.name}</h4>
-                        </div>
-                        <div class="col-sm-6">
-                            <h4>${__('Company')}: ${this.doc.company}</h4>
-                        </div>
-                    </div>
+			        ${this.head}
                     ${components}
                 </div>
 			</div>
