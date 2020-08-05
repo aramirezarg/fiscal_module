@@ -177,8 +177,9 @@ class FiscalDocument(Document):
 
 
 def fiscal_document_data(doc):
-    settings = DeviceManage.settings()
-    device = DeviceManage.get_current(settings)
+    from fiscal_module.fiscal_module.doctype.device.device import Device
+    settings = Device.general_settings()
+    device = Device.get_current(settings)
 
     pos_profile = device.get_pos_profile
     fiscal_document = device.get_active_fiscal_document

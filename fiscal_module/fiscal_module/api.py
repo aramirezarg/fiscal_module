@@ -99,10 +99,9 @@ class DeviceManage:
 
 
 @frappe.whitelist()
-def set_device_id(device_id):
-    cookie_device_id = Device.identifier()
-    if cookie_device_id is not None:
-          # frappe.local.cookie_manager.cookies["device_id"]
+def set_device_id(device_id, current_device_id=None):
+    cookie_device_id = current_device_id  # Device.identifier()
+    if current_device_id is not None:
         if frappe.get_value("Device", cookie_device_id) is not None:
             if cookie_device_id != device_id:
                 frappe.rename_doc('Device', cookie_device_id, device_id)
@@ -112,27 +111,7 @@ def set_device_id(device_id):
     else:
         Device.set_identifier(device_id)
 
-    d = None
-    if hasattr(frappe.local.cookie_manager, "cookies"):
-        if "device_id" in frappe.local.cookie_manager.cookies:
-            d = frappe.local.cookie_manager.cookies["device_id"]["value"]
-    else:
-        d = "None"
-
     return [
         frappe.local.cookie_manager.cookies,
-        d,
-        Device.identifier(),
-        frappe.cache().hget('device_id', 'device_id'),
-        Device.identifier1()
-    ]#, frappe.get_request_header#("device_id")
-
-
-@frappe.whitelist()
-def test_device_id():
-    return [
-        frappe.local.cookie_manager.cookies,
-        #Device.identifier1(),
-        #frappe.cache().hget('device_id', 'device_id'),
-        Device.identifier1()
+        cookie_device_id
     ]

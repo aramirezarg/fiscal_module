@@ -14,25 +14,18 @@ class CurrentDevice {
         this.set_device_id();
 
         if(this.id != null){
-            this.persistent_name();
+            //this.persistent_name();
 
             frappe.call({
                 method: this.url_manage + "set_device_id",
-                args: {device_id: this.id},
+                args: {
+                    device_id: this.id,
+                    current_device_id: frappe.get_cookie("device_id")
+                },
                 always: (r) => {
                     console.log(r);
                 },
             });
-
-            setTimeout(() => {
-                 frappe.call({
-                    method: this.url_manage + "test_device_id",
-                    //args: {device_id: this.id},
-                    always: (r) => {
-                        console.log(r);
-                    },
-                });
-            },2000)
         }else{
             setTimeout(() => {
                 this.send_device_id_to_server();
@@ -68,11 +61,16 @@ class CurrentDevice {
     }
 
     persistent_name() {
-        let date = new Date();
-        date.setTime(date.getTime() + (100*24*60*60*1000));
-        let expires = "; expires=" + date.toUTCString();
+        //res.set('Foo', ['bar', 'baz']);
+        //document.setRequestHeader('device_id', `key=${this.id}`);
+        //document.cookie = `device_id=${this.id}`;
+       //context.setVariable('response.header.set-cookie.1', `device_id=${this.id};`);
 
-        document.cookie = `device_id=${this.id} ${expires} ; path=/`;
+        /*let date = new Date();
+        date.setTime(date.getTime() + (100*24*60*60*1000));
+        let expires = "expires=" + date.toUTCString();
+
+        document.cookie = `device_id=${this.id}; ${expires}; path=/`;*/
     }
 
     get_persistent_name() {
