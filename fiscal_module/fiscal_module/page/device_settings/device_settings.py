@@ -20,3 +20,15 @@ def get_device(device=None):
         ]
 
     return None
+
+
+@frappe.whitelist()
+def get_settings(device=None):
+    if frappe.get_value("Device", device):
+        doc = frappe.get_doc("Device", device)
+        return frappe.render_template("fiscal_module/fiscal_module/page/device_settings/device_settings.html", {
+            "doc": doc,
+            "data": frappe.session.data
+        })
+
+    return ""

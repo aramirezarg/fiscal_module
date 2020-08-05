@@ -1,5 +1,5 @@
 frappe.pages['Device Settings'].on_page_load = function (wrapper) {
-    var page = frappe.ui.make_app_page({
+    let page = frappe.ui.make_app_page({
         parent: wrapper,
         title: __('Loading device Data'),
         single_column: true,
@@ -10,18 +10,17 @@ frappe.pages['Device Settings'].on_page_load = function (wrapper) {
     }, 0)
 }
 
-function device_check(page, wrapper){
+function device_check(page, wrapper) {
     setTimeout(() => {
         if(Device.id == null) {
             page.set_title(`${__("Loading device Info")}`)
             device_check();
-        } else{
+        } else {
             page.set_title(`<strong>${__("Device")}</strong>: <small>${Device.id}</small>`)
             new DeviceManage(wrapper, page);
         }
     }, 200)
 }
-
 
 DeviceManage = class DeviceManage {
     constructor(wrapper, page) {
@@ -30,7 +29,7 @@ DeviceManage = class DeviceManage {
         this.wrapper = $(wrapper).find('.layout-main-section');
         this.edit_form = null;
         this.id = Device.id;
-        this.head = "";
+        this.settings = "";
         this.url_manage = "fiscal_module.fiscal_module.page.device_settings.device_settings.";
 
         const assets = [
@@ -51,7 +50,7 @@ DeviceManage = class DeviceManage {
             () => {
                 this.get_device().then((r) => {
                     this.doc = r[0];
-                    this.head = r[1];
+                    this.settings = r[1];
 					this.prepare_dom();
 				});
             },
@@ -68,6 +67,10 @@ DeviceManage = class DeviceManage {
 		return frappe.xcall(this.url_manage + "get_device", {device: Device.id})
     }
 
+    get_settings(){
+		return frappe.xcall(this.url_manage + "get_settings", {device: Device.id})
+    }
+
     add_actions() {
 		//this.page.show_menu()
         this.page.set_secondary_action(__('Device List'), () => {
@@ -80,7 +83,7 @@ DeviceManage = class DeviceManage {
 	}
 
     prepare_dom() {
-        let doc = frappe.get_doc("Device", this.id);
+        //let doc = frappe.get_doc("Device", this.id);
         let components = `
             <table class='table table-condensed table-bordered table-responsive'>
                 <thead>
@@ -98,16 +101,25 @@ DeviceManage = class DeviceManage {
                     <td>${String(obj.value).substr(0, 100)}${obj.value.length > 100 ? '...' : ''}</td>
                 </tr>`;
         }
-        components += "</tbody></table>"
+        components += "</tbody></table>";
 
         this.wrapper.append(`
 			<div class="device-container">
 			    <div class="components-container">
-			        ${this.head}
+			        <div class="settings-container"></div>
                     ${components}
                 </div>
 			</div>
 		`);
+
+        $(".settings-container").empty().append(this.settings)
+    }
+
+    set_settings(){
+        this.get_settings().then((r) => {
+            this.settings = r;
+            $(".settings-container").empty().append(this.settings);
+        });
     }
 
     update(){
@@ -125,11 +137,13 @@ DeviceManage = class DeviceManage {
                         }
                     }
                 },
-				call_back: ()=> {
+				call_back: () => {
 					this.edit_form.hide();
 					setTimeout(() => {
 					    this.base_wrapper.find(".page-head").removeClass("hide");
                     }, 0)
+
+                    this.set_settings();
 				},
 				title: __(`Update ${this.id}`),
 			});
