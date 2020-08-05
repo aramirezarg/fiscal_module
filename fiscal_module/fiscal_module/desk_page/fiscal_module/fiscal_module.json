@@ -24,7 +24,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Fiscal Module",
- "modified": "2020-08-01 21:49:40.564300",
+ "modified": "2020-08-04 23:47:28.630196",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Module",
@@ -66,9 +66,9 @@
    "type": "DocType"
   },
   {
-   "icon": "fa fa-laptop",
-   "label": "Device Info",
-   "link_to": "Device Info",
+   "icon": "fa fa-desktop",
+   "label": "Device Settings",
+   "link_to": "Device Settings",
    "type": "Page"
   }
  ]

@@ -1,4 +1,4 @@
-frappe.pages['Device Info'].on_page_load = function (wrapper) {
+frappe.pages['Device Settings'].on_page_load = function (wrapper) {
     var page = frappe.ui.make_app_page({
         parent: wrapper,
         title: __('Loading device Data'),
@@ -30,7 +30,7 @@ DeviceManage = class DeviceManage {
         this.wrapper = $(wrapper).find('.layout-main-section');
         this.edit_form = null;
         this.id = Device.id;
-        this.url_manage = "fiscal_module.fiscal_module.page.device_info.device_info.";
+        this.url_manage = "fiscal_module.fiscal_module.page.device_settings.device_settings.";
 
         const assets = [
             'assets/ceti/js/jshtml-class.js',
@@ -48,7 +48,10 @@ DeviceManage = class DeviceManage {
         return frappe.run_serially([
             () => frappe.dom.freeze(),
             () => {
-                this.prepare_dom();
+                this.get_device().then((r) => {
+                    this.doc = r;
+					this.prepare_dom();
+				});
             },
             () => {
                 frappe.dom.unfreeze();
@@ -59,22 +62,34 @@ DeviceManage = class DeviceManage {
         ]);
     }
 
+    get_device(){
+		return frappe.xcall(this.url_manage + "get_device", {device: Device.id})
+    }
+
     add_actions() {
 		//this.page.show_menu()
         this.page.set_secondary_action(__('Device List'), () => {
 			frappe.set_route('List/Device/List');
 		});
 
-        this.page.set_primary_action(__('Update'), () => {
+        this.page.set_primary_action(__('Setting'), () => {
 			this.update();
 		});
 	}
 
     prepare_dom() {
-        let components = "<table class='table table-condensed table-responsive'><tbody>";
+        let doc = frappe.get_doc("Device", this.id);
+        let components = `
+            <table class='table table-condensed table-bordered table-responsive'>
+                <thead>
+                    <h3>${__("Components")}</h3>
+                </thead>
+                <tbody>`;
 
-        for (var index in Device.components) {
-            var obj = Device.components[index];
+        for (let index in Device.components) {
+            if (!Device.components.hasOwnProperty(index)) continue;
+
+            let obj = Device.components[index];
             components += `
                 <tr>
                     <th>${obj.key}</th>
@@ -85,8 +100,17 @@ DeviceManage = class DeviceManage {
 
         this.wrapper.append(`
 			<div class="device-container">
-                <h4>Components</h4>
-                ${components}
+			    <div class="components-container">
+			        <div class="row">
+                        <div class="col-sm-6">
+                            <h4>ID: ${this.doc.name}</h4>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>${__('Company')}: ${this.doc.company}</h4>
+                        </div>
+                    </div>
+                    ${components}
+                </div>
 			</div>
 		`);
     }

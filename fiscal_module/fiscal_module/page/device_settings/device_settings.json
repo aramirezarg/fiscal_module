@@ -8,9 +8,9 @@
  "modified": "2020-08-03 22:38:35.787811",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
- "name": "Device Info",
+ "name": "Device Settings",
  "owner": "Administrator",
- "page_name": "Device Info",
+ "page_name": "Device Settings",
  "roles": [
   {
    "role": "System Manager"
@@ -20,5 +20,5 @@
  "standard": "Yes",
  "style": null,
  "system_page": 0,
- "title": "Device Info"
+ "title": "Device Settings"
 }

@@ -23,6 +23,17 @@ class Device(Document):
                     fd.fiscal_document, self.company
                 ))
 
+            if fd.status == "Enabled":
+                filters = {
+                    "fiscal_document": fd.fiscal_document,
+                    "name": ("!=", fd.name),
+                    "status": "Enabled"
+                }
+                if frappe.db.count("Device Fiscal Document", filters) > 0:
+                    frappe.throw(_('The Fiscal Document {0} already use in Device {1}').format(
+                        fd.fiscal_document, frappe.get_value("Device Fiscal Document", filters, "parent")
+                    ))
+
             checks.append(fd.fiscal_document)
 
         if len(checks) != len(set(checks)):
@@ -81,20 +92,14 @@ class Device(Document):
     @staticmethod
     def get_current(settings=None):
         settings = Device.general_settings() if settings is None else settings
-        cookie_device_id = Device.identifier()
-        device_filter = {}
 
-        if settings.device:
-            if cookie_device_id is not None:
-                device_filter = {"identifier": cookie_device_id}
-        else:
-            device_filter = {"user": frappe.session.user}
+        device_filter = {"name": Device.identifier()} if settings.device else {"user": frappe.session.user}
 
-        if frappe.get_value("Device", device_filter) is None:
+        if frappe.db.count("Device", device_filter) == 0:
             frappe.throw(_(f'{_("This Device has not ben configured")}<br><br>'
                            f'<strong>{_("Please configure this Device before continuing")}</strong>'))
         else:
-            return frappe.get_doc("Device", cookie_device_id)
+            return frappe.get_doc("Device", device_filter)
 
     @staticmethod
     def identifier():
