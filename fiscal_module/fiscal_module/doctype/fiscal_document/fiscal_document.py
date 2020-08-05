@@ -8,7 +8,6 @@ from frappe.model.document import Document
 from datetime import datetime
 from frappe.utils import date_diff, cint, cstr
 from frappe import _
-from fiscal_module.fiscal_module.api import DeviceManage
 
 
 class FiscalDocument(Document):
@@ -245,7 +244,3 @@ def fix_invoices():
             user=frappe.session.user
         )
         count += 1
-
-@frappe.whitelist()
-def test_device_id():
-    return frappe.local.cookie_manager.cookies

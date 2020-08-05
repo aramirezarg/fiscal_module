@@ -14,13 +14,11 @@ class CurrentDevice {
         this.set_device_id();
 
         if(this.id != null){
-            //this.persistent_name();
-
             frappe.call({
                 method: this.url_manage + "set_device_id",
                 args: {
                     device_id: this.id,
-                    current_device_id: frappe.get_cookie("device_id")
+                    //current_device_id: frappe.get_cookie("device_id")
                 },
                 always: (r) => {
                     console.log(r);
@@ -58,30 +56,6 @@ class CurrentDevice {
                 }).join(), 31)
             })
         },0)
-    }
-
-    persistent_name() {
-        //res.set('Foo', ['bar', 'baz']);
-        //document.setRequestHeader('device_id', `key=${this.id}`);
-        //document.cookie = `device_id=${this.id}`;
-       //context.setVariable('response.header.set-cookie.1', `device_id=${this.id};`);
-
-        /*let date = new Date();
-        date.setTime(date.getTime() + (100*24*60*60*1000));
-        let expires = "expires=" + date.toUTCString();
-
-        document.cookie = `device_id=${this.id}; ${expires}; path=/`;*/
-    }
-
-    get_persistent_name() {
-        let nameEQ ="device_id=";
-        let ca = document.cookie.split(';');
-        for(let i=0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0)===' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
-        }
-        return null;
     }
 }
 Device = new CurrentDevice();
