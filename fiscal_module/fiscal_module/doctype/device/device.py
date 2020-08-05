@@ -85,14 +85,14 @@ class Device(Document):
         device_filter = {}
 
         if settings.device:
-            if not cookie_device_id:  # "device_id" in frappe.local.cookie_manager.cookies:
-                device_filter = {"name": cookie_device_id}
+            if cookie_device_id is not None:
+                device_filter = {"identifier": cookie_device_id}
         else:
             device_filter = {"user": frappe.session.user}
 
         if frappe.get_value("Device", device_filter) is None:
             frappe.throw(_(f'{_("This Device has not ben configured")}<br><br>'
-                           f'<strong>{_("Please configure this Device before continuing")} {cookie_device_id}</strong>'))
+                           f'<strong>{_("Please configure this Device before continuing")}</strong>'))
         else:
             return frappe.get_doc("Device", cookie_device_id)
 
