@@ -12,7 +12,8 @@
   "column_break_5",
   "billing_range",
   "section_break_7",
-  "default_fiscal_document"
+  "identifier_mode",
+  "device_component"
  ],
  "fields": [
   {
@@ -48,18 +49,25 @@
   },
   {
    "fieldname": "section_break_7",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Device"
   },
   {
-   "fieldname": "default_fiscal_document",
-   "fieldtype": "Link",
-   "label": "Default Fiscal Document",
-   "options": "Fiscal Document"
+   "fieldname": "device_component",
+   "fieldtype": "Table",
+   "label": "Device Components",
+   "options": "Device Component"
+  },
+  {
+   "default": "0",
+   "fieldname": "identifier_mode",
+   "fieldtype": "Check",
+   "label": "Identifier Mode"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-05-28 16:44:43.549176",
+ "modified": "2020-08-05 23:57:32.119948",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Module Settings",

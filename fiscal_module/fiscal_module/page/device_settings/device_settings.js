@@ -1,25 +1,26 @@
 frappe.pages['Device Settings'].on_page_load = function (wrapper) {
-    let page = frappe.ui.make_app_page({
-        parent: wrapper,
-        title: __('Loading device Data'),
-        single_column: true,
-    });
+    let load_page = () => {
+         let page = frappe.ui.make_app_page({
+             parent: wrapper,
+             title: __('Loading device Data'),
+             single_column: true,
+         });
 
-    setTimeout(() => {
-        device_check(page, wrapper);
-    }, 0)
-}
+         page.set_title(`<strong>${__("Device")}</strong>: <small>${Device.id}</small>`);
+         new DeviceManage(wrapper, page);
+    }
 
-function device_check(page, wrapper) {
-    setTimeout(() => {
+    let test = () => {
         if(Device.id == null) {
-            page.set_title(`${__("Loading device Info")}`)
-            device_check();
-        } else {
-            page.set_title(`<strong>${__("Device")}</strong>: <small>${Device.id}</small>`)
-            new DeviceManage(wrapper, page);
+            setTimeout(() => {
+                test();
+            }, 100)
+        }else{
+            load_page();
         }
-    }, 200)
+    }
+
+    test();
 }
 
 DeviceManage = class DeviceManage {
@@ -132,10 +133,20 @@ DeviceManage = class DeviceManage {
 				    this.edit_form.form.field_group.fields_dict['fiscal_document'].grid.get_field('fiscal_document').get_query = (doc, cdt, cdn) => {
                         return {
                             filters:[
-                                ['company', '=', "CETI"]
+                                ['company', '=', this.edit_form.form.get_value("company")]
                             ]
                         }
                     }
+
+                    //console.log(this.edit_form.form.get_field('pos_profile'));
+
+				    /*this.edit_form.form.field_group.get_field('pos_profile').get_query = () => {
+                        return {
+                            filters: [
+                                ['disabled', '=', 0]
+                            ]
+                        }
+                    };*/
                 },
 				call_back: () => {
 					this.edit_form.hide();
