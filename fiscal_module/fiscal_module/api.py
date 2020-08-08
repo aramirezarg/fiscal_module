@@ -19,9 +19,8 @@ def set_identifier_device_data(device_components=None, string_components=None, d
 
         base = ""
         for item in request_components:
-            if item.excluded == 0:
-                components[item.component] = get_component(request_components, item.component)
-                base = base + f'%({item.component})s|'
+            components[item.component] = get_component(request_components, item.component)
+            base = base + f'%({item.component})s|'
 
         HA1_str = base % components
         device_id = encrypt(HA1_str, "md5")
