@@ -19,8 +19,8 @@ def set_identifier_device_data(device_components=None, string_components=None, d
 
         base = ""
         for item in request_components:
-            components[item.component] = get_component(request_components, item.component)
-            base = base + f'%({item.component})s|'
+            components[item["key"]] = item["value"]
+            base = f'{base}%({item["key"]})s|'
 
         HA1_str = base % components
         device_id = encrypt(HA1_str, "md5")
@@ -41,11 +41,3 @@ def set_identifier_device_data(device_components=None, string_components=None, d
                     # TODO: Disconnect
 
     return device_id
-
-
-def get_component(components, component):
-    for item in components:
-        if item["key"] == component:
-            return item["value"]
-
-    return ""
