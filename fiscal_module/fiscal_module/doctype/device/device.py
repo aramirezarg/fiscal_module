@@ -114,7 +114,6 @@ class Device(Document):
 
         if frappe.get_value("Device", device_id) is None:
             doc = frappe.new_doc("Device")
-            doc.workstation_name = f"Workstation {frappe.db.count('Device') + 1}"
             doc.identifier = device_id
             doc.string_components = "" if string_components is None else string_components
 
@@ -122,6 +121,7 @@ class Device(Document):
             if detail_components is not None:
                 for row in detail_components:
                     doc.host = row["host"]
+                    doc.workstation_name = row["host"]
                     doc.primary_device = row["primary_device"]
                     doc.mac = row["mac"]
 
