@@ -10,25 +10,19 @@ import frappe
 def get_device(device=None):
     if frappe.get_value("Device", device):
         doc = frappe.get_doc("Device", device)
-        return [
-            doc,
-            frappe.render_template("fiscal_module/fiscal_module/page/device_settings/device_settings.html", {
+        return dict(
+            has_device=True,
+            doc=doc,
+            settings=frappe.render_template("fiscal_module/fiscal_module/page/device_settings/device_settings.html", {
                 "doc": doc,
                 "data": frappe.session.data
             }),
-            frappe.session.data
-        ]
+            data=frappe.session.data
+        )
 
-    return None
-
-
-@frappe.whitelist()
-def get_settings(device=None):
-    if frappe.get_value("Device", device):
-        doc = frappe.get_doc("Device", device)
-        return frappe.render_template("fiscal_module/fiscal_module/page/device_settings/device_settings.html", {
-            "doc": doc,
+    return dict(
+        has_device=False,
+        no_device=frappe.render_template("fiscal_module/fiscal_module/page/device_settings/no_device.html", {
             "data": frappe.session.data
-        })
-
-    return ""
+        }),
+    )

@@ -10,10 +10,7 @@
   "column_break_3",
   "date_range",
   "column_break_5",
-  "billing_range",
-  "section_break_7",
-  "identifier_mode",
-  "device_component"
+  "billing_range"
  ],
  "fields": [
   {
@@ -46,28 +43,11 @@
    "fieldname": "billing_range",
    "fieldtype": "Check",
    "label": "Billing Range"
-  },
-  {
-   "fieldname": "section_break_7",
-   "fieldtype": "Section Break",
-   "label": "Device"
-  },
-  {
-   "fieldname": "device_component",
-   "fieldtype": "Table",
-   "label": "Device Components",
-   "options": "Device Component"
-  },
-  {
-   "default": "0",
-   "fieldname": "identifier_mode",
-   "fieldtype": "Check",
-   "label": "Identifier Mode"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-08-05 23:57:32.119948",
+ "modified": "2020-08-07 23:11:17.704270",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Module Settings",

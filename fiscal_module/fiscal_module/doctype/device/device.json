@@ -16,8 +16,15 @@
   "user",
   "section_break_7",
   "identifier",
-  "section_break_12",
-  "fiscal_document"
+  "fiscal_document",
+  "section_break_11",
+  "host",
+  "column_break_13",
+  "primary_device",
+  "column_break_15",
+  "mac",
+  "section_break_13",
+  "string_components"
  ],
  "fields": [
   {
@@ -72,19 +79,56 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "section_break_12",
-   "fieldtype": "Section Break"
-  },
-  {
    "fieldname": "fiscal_document",
    "fieldtype": "Table",
    "label": "Fiscal Document",
    "options": "Device Fiscal Document"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break",
+   "label": "Network Details"
+  },
+  {
+   "fieldname": "string_components",
+   "fieldtype": "Text Editor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "host",
+   "fieldtype": "Data",
+   "label": "Host",
+   "read_only": 1
+  },
+  {
+   "fieldname": "primary_device",
+   "fieldtype": "Data",
+   "label": "Primary Device",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mac",
+   "fieldtype": "Data",
+   "label": "Mac",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_11",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
   }
  ],
  "in_create": 1,
  "links": [],
- "modified": "2020-08-04 14:47:12.877149",
+ "modified": "2020-08-07 22:30:41.105075",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Device",

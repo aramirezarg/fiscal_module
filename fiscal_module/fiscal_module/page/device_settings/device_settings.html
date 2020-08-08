@@ -16,21 +16,10 @@
             </div>
             <div class="box-footer no-padding">
                 <ul class="nav nav-stacked">
-                    <li>
-                        <a href="#">{{ _("Company") }}
-                            <span class="pull-right badge-box bg-blue">{{ doc.company }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">{{ _("POS Profile") }}
-                            <span class="pull-right badge-box bg-aqua">{{ doc.pos_profile }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">{{ _("Assigned to") }}
-                            <span class="pull-right badge-box bg-green">{{ doc.user }}</span>
-                        </a>
-                    </li>
+                    <li><a href="#">{{ _("Company") }}<span class="pull-right badge-box bg-blue">{{ doc.company }}</span></a></li>
+                    <li><a href="#">{{ _("POS Profile") }}<span class="pull-right badge-box bg-aqua">{{ doc.pos_profile }}</span></a></li>
+                    <li><a href="#">{{ _("Assigned to") }}<span class="pull-right badge-box bg-green">{{ doc.user }}</span></a></li>
+                    <li><a href="#">{{ _("Current User") }}<span class="pull-right badge-box bg-green">{{ data.user }}</span></a></li>
                 </ul>
             </div>
         </div>
@@ -53,9 +42,10 @@
             </div>
             <div class="box-footer no-padding">
                 <ul class="nav nav-stacked">
-                    <li><a href="#">Device Type <span class="pull-right badge-box bg-blue">{{ data.device }}</span></a></li>
-                    <li><a href="#">Language <span class="pull-right badge-box bg-aqua">{{ data.lang }}</span></a></li>
-                    <li><a href="#">Current User <span class="pull-right badge-box bg-green">{{ data.user }}</span></a></li>
+                    <li><a href="#">{{_("Device Type")}} <span class="pull-right badge-box bg-blue">{{ data.device }}</span></a></li>
+                    <li><a href="#">{{_("Host")}} <span class="pull-right badge-box bg-aqua">{{ doc.host }}</span></a></li>
+                    <li><a href="#">{{_("Primary Device")}} <span class="pull-right badge-box bg-aqua">{{ doc.primary_device }}</span></a></li>
+                    <li><a href="#">{{_("Mac")}} <span class="pull-right badge-box bg-aqua">{{ doc.mac }}</span></a></li>
                 </ul>
             </div>
         </div>

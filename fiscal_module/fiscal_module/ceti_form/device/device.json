@@ -57,7 +57,7 @@
    "show_in_filter": 0
   },
   {
-   "allow_read_on_all_link_options": 0,
+   "allow_read_on_all_link_options": 1,
    "fieldname": "company",
    "fieldtype": "Link",
    "hidden": 0,
@@ -81,7 +81,7 @@
    "show_in_filter": 0
   },
   {
-   "allow_read_on_all_link_options": 0,
+   "allow_read_on_all_link_options": 1,
    "fieldname": "pos_profile",
    "fieldtype": "Link",
    "hidden": 0,
@@ -151,7 +151,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-08-06 00:08:12.607868",
+ "modified": "2020-08-07 23:41:47.714049",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "device",

@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import datetime
 
 
 class Device(Document):
@@ -96,7 +97,7 @@ class Device(Document):
         device_filter = {"name": Device.identifier()} if settings.device else {"user": frappe.session.user}
 
         if frappe.db.count("Device", device_filter) == 0:
-            frappe.throw(_(f'{_("This Device has not ben configured")}<br><br>'
+            frappe.throw(_(f'{_("This Device or Browser has not ben configured")}<br><br>'
                            f'<strong>{_("Please configure this Device before continuing")}</strong>'))
         else:
             return frappe.get_doc("Device", device_filter)
@@ -106,12 +107,22 @@ class Device(Document):
         return frappe.cache().hget('device_id', frappe.session.sid)
 
     @staticmethod
-    def set_identifier(device_id):
+    def set_identifier(device_id, string_components=None, detail_components=None):
+        expires = datetime.datetime.now() + datetime.timedelta(days=365)
         frappe.cache().hset('device_id', frappe.session.sid, device_id)
+        frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires)
 
         if frappe.get_value("Device", device_id) is None:
             doc = frappe.new_doc("Device")
             doc.workstation_name = f"Workstation {frappe.db.count('Device') + 1}"
             doc.identifier = device_id
+            doc.string_components = "" if string_components is None else string_components
+
             doc.company = frappe.defaults.get_user_default('company')
+            if detail_components is not None:
+                for row in detail_components:
+                    doc.host = row["host"]
+                    doc.primary_device = row["primary_device"]
+                    doc.mac = row["mac"]
+
             doc.save()

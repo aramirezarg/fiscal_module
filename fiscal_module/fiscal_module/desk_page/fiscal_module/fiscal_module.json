@@ -2,17 +2,31 @@
  "cards": [
   {
    "hidden": 0,
-   "label": "Fiscal Module",
-   "links": "[\n    {\n        \"label\": \"Settings\",\n        \"name\": \"Fiscal Module Settings\",\n        \"type\": \"doctype\"\n    },\n    {\n        \"label\": \"Fiscal Document\",\n        \"name\": \"Fiscal Document\",\n        \"type\": \"doctype\"\n    },\n    {\n        \"label\": \"Device\",\n        \"name\": \"Device\",\n        \"type\": \"doctype\"\n    }\n]"
+   "label": "Fiscal Document",
+   "links": "[\n    {\n        \"label\": \"Document Type\",\n        \"name\": \"Fiscal Document Type\",\n        \"type\": \"doctype\",\n        \"onboard\": 1\n    },\n    {\n        \"label\": \"Fiscal Document\",\n        \"name\": \"Fiscal Document\",\n        \"type\": \"doctype\"\n    }\n]"
   },
   {
    "hidden": 0,
    "label": "Invoice",
-   "links": "[\n    {\n        \"label\": \"POS Profile\",\n        \"name\": \"POS Profile\",\n        \"type\": \"doctype\"\n    },\n    {\n        \"label\": \"Sales Invoice\",\n        \"name\": \"Sales Invoice\",\n        \"type\": \"doctype\"\n    }\n]"
+   "links": "[\n    {\n        \"label\": \"POS Profile\",\n        \"name\": \"POS Profile\",\n        \"type\": \"doctype\",\n        \"onboard\": 1\n    },\n    {\n        \"label\": \"Sales Invoice\",\n        \"name\": \"Sales Invoice\",\n        \"type\": \"doctype\"\n    }\n]"
+  },
+  {
+   "hidden": 0,
+   "label": "Device",
+   "links": "[\n    {\n        \"label\": \"Setting\",\n        \"name\": \"Device Settings\",\n        \"type\": \"page\",\n        \"onboard\": 1\n    },\n    {\n        \"label\": \"Devices\",\n        \"name\": \"Device\",\n        \"type\": \"doctype\"\n    }\n]"
   }
  ],
  "category": "Modules",
- "charts": [],
+ "charts": [
+  {
+   "chart_name": "Active Fiscal Documents",
+   "label": "Active Fiscal Documents"
+  },
+  {
+   "chart_name": "Linked Invoices",
+   "label": "Linked Invoices"
+  }
+ ],
  "charts_label": "",
  "creation": "2020-07-25 23:16:14.765271",
  "developer_mode_only": 0,
@@ -24,7 +38,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Fiscal Module",
- "modified": "2020-08-04 23:47:28.630196",
+ "modified": "2020-08-07 23:09:28.781592",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Module",

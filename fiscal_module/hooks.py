@@ -38,8 +38,8 @@ doc_events = {
 }
 
 app_include_js = [
-    "/assets/fiscal_module/js/fingerprint2.js",
-    "/assets/fiscal_module/js/device.js"
+    "/assets/fiscal_module/js/qz-tray.js",
+    "/assets/fiscal_module/js/device.js",
 ]
 
 # doctype_js = {

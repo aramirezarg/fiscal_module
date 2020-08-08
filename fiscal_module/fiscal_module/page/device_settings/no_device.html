@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box-no-device box-widget-no-device widget-panel">
+            <div class="widget-panel-header">
+                <table style="width: 100%">
+                    <tr>
+                        <td style="min-width: 200px; max-width: 200px">
+                            <span class="widget-icon fa fa-desktop"></span>
+                        </td>
+                        <td style="width: 100%">
+                            <h3 class="widget-user-username">{{ _("Device Settings") }}</h3>
+                            <h5 class="widget-user-desc">
+                                {{ _("This Device or Browser has not ben configured") }}
+                            </h5>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .box-widget-no-device {
+        border: none;
+        position: relative;
+        color: #132b39;
+    }
+
+    .box-no-device .widget-icon {
+        font-size: 150px;
+    }
+
+    .box-no-device {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border-top: 3px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .box-no-device.widget-panel .widget-panel-header {
+        padding: 10px;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+        background-color: #d2d6de;
+    }
+
+    .box-no-device.widget-panel .widget-user-username {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 25px;
+        font-weight: 300;
+        color: orangered;
+    }
+
+    .box-no-device.widget-panel .widget-user-desc {
+        margin-top: 0;
+        color: orangered;
+    }
+</style>

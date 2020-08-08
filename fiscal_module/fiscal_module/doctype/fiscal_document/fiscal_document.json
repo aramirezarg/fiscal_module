@@ -110,7 +110,7 @@
    "fieldname": "validation_date",
    "fieldtype": "Date",
    "hidden": 1,
-   "label": "Validatiorn Date"
+   "label": "Validation Date"
   },
   {
    "fieldname": "current_position",
@@ -168,7 +168,7 @@
   }
  ],
  "links": [],
- "modified": "2020-08-03 23:05:27.848352",
+ "modified": "2020-08-07 23:06:54.764006",
  "modified_by": "Administrator",
  "module": "Fiscal Module",
  "name": "Fiscal Document",
