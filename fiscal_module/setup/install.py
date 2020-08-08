@@ -64,21 +64,6 @@ def set_custom_scripts():
             CS.script = """setInterval(()=>{ $("div[data-fieldname='naming_series']").hide()}, 500)"""
             CS.save()
 
-    CS = frappe.new_doc("Custom Script")
-    CS.dt = "POS Profile"
-    CS.script = """
-        frappe.ui.form.on("POS Profile", "refresh", function(frm) {
-            frm.fields_dict['fiscal_document'].grid.get_field('fiscal_document').get_query = (doc, cdt, cdn) => {
-                var child = locals[cdt][cdn];
-                return {    
-                    filters:[
-                        ['company', '=', frm.doc.company]
-                    ]
-                }
-            }
-        });"""
-    CS.save()
-
 
 def create_documents_structure():
     fields = {
@@ -159,21 +144,6 @@ def create_documents_structure():
         label="POS Profile",
         fieldtype="Link"
     ))
-
-    """add_custom_field("POS Profile", dict(
-        label="Fiscal Document",
-        fieldtype="Table",
-        options="POS Fiscal Document",
-        read_only=0,
-        reqd=1
-    ))
-
-    add_custom_field("POS Profile", dict(
-        label="Device",
-        fieldtype="Link",
-        read_only=0,
-        reqd=1
-    ))"""
 
     add_custom_field("Company", dict(
         label="Establishment",
