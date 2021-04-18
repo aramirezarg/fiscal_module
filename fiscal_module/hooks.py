@@ -12,6 +12,7 @@ app_email = "info@ceti.systems"
 app_license = "MIT"
 
 base_fiscal_document = "fiscal_module.fiscal_module.doctype.fiscal_document.fiscal_document."
+base_device = "fiscal_module.fiscal_module.doctype.device.device."
 
 # "on_load"
 # "on_create"
@@ -19,22 +20,15 @@ base_fiscal_document = "fiscal_module.fiscal_module.doctype.fiscal_document.fisc
 # "on_submit"
 doc_events = {
     "Sales Invoice": {
-        "autoname": f"{base_fiscal_document}set_fiscal_document_info",
-        #"on_update": f"{base_fiscal_document}validate_fiscal_document",
-        #"on_submit": f"{base_fiscal_document}validate_fiscal_document"
+        "autoname": f"{base_fiscal_document}set_fiscal_document_info"
     },
     "Fees": {
-        "autoname": f"{base_fiscal_document}set_fiscal_document_info",
-        #"on_update": f"{base_fiscal_document}validate_fiscal_document",
-        #"on_submit": f"{base_fiscal_document}validate_fiscal_document"
+        "autoname": f"{base_fiscal_document}set_fiscal_document_info"
     },
     "Purchase Invoice": {
         "autoname": f"{base_fiscal_document}autoname_purchase_invoice",
         "on_cancel": f"{base_fiscal_document}on_cancel_purchase_invoice"
     },
-    #"POS Profile": {
-    #    "on_update": f"{base_fiscal_document}validate_fiscal_documents_in_pos"
-    #},
 }
 
 app_include_js = [

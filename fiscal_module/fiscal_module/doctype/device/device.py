@@ -13,9 +13,6 @@ class Device(Document):
     def autoname(self):
         self.name = self.identifier
 
-    def validate(self):
-        self.validate_fiscal_documents()
-
     def validate_fiscal_documents(self):
         checks = []
         for fd in self.fiscal_document:
@@ -42,13 +39,24 @@ class Device(Document):
 
     @property
     def has_pos_profile(self):
-        return self.pos_profile is not None
+        return self.pos_profile is not None and frappe.get_value("POS Profile", self.pos_profile) is not None
 
     @property
     def get_pos_profile(self):
         if frappe.get_value("POS Profile", self.pos_profile) is None:
             frappe.throw(_(f'{_("The POS Profile has not ben configured for this device")}<br><br>'
                            f'<strong>{_("Please configure the POS profile before continuing")}</strong>'))
+
+        if frappe.db.count("POS Profile User", {
+            "parenttype": "POS Profile",
+            "parent": self.pos_profile,
+            "user": frappe.session.user,
+            "default": 1
+        }) == 0:
+            frappe.throw(
+                _(f'{_("Your user has not been configured in the POS Profile <strong>({0})</strong>").format(self.pos_profile)}<br><br>'
+                  f'<strong>{_("Configure your user and set the Default property to 1")}</strong>')
+            )
 
         return frappe.get_doc("POS Profile", self.pos_profile)
 
@@ -104,7 +112,12 @@ class Device(Document):
 
     @staticmethod
     def identifier():
-        return frappe.cache().hget('device_id', frappe.session.sid)
+        device_id = frappe.cache().hget('device_id', frappe.session.sid)
+
+        expires = datetime.datetime.now() + datetime.timedelta(days=365)
+        frappe.local.cookie_manager.set_cookie("device_id", device_id, expires=expires)
+
+        return device_id
 
     @staticmethod
     def set_identifier(device_id, string_components=None, detail_components=None):
