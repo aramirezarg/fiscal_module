@@ -74,7 +74,7 @@ class CurrentDevice {
                     this.all_components.push({
                         key: item.mac,
                         value: `${item.hostname} ${item.name}`,
-                    })
+                    });
 
                     if (item.hasOwnProperty("mac") && item.primary) {
                         this.components.push({
@@ -88,11 +88,11 @@ class CurrentDevice {
                             primary_device: item.name
                         });
                     }
-                })
+                });
 
                 resolve();
             }).catch();
-        })
+        });
     }
 
     set_string_components(data) {
